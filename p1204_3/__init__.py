@@ -30,8 +30,8 @@ def main(_=[]):
     parser.add_argument(
         "--model",
         type=str,
-        default=os.path.join(os.path.dirname(__file__), "models/p1204_3"),
-        help="model to be used for prediction",
+        default=os.path.join(os.path.dirname(__file__), "models/p1204_3/config.json"),
+        help="model config file to be used for prediction",
     )
     parser.add_argument(
         "--cpu_count",
@@ -45,7 +45,6 @@ def main(_=[]):
         default="pc",
         help="device that is used for playout"
     )
-
     parser.add_argument(
         "--device_resolution",
         choices=DEVICE_RESOLUTIONS,
@@ -58,11 +57,17 @@ def main(_=[]):
         default="1.5xH",
         help="viewing distance relative to the display height"
     )
-
+    parser.add_argument(
+        "--display_size",
+        choices=DISPLAY_SIZES,
+        type=float,
+        default=55,
+        help="display diagonal size in inches"
+    )
 
     a = vars(parser.parse_args())
 
-    assert_file(os.path.join(a["model"], "config.json"), "model folder is not valid")
+    assert_file(a["model"], "model folder is not valid")
     logging.info(a["video"])
 
     pool = multiprocessing.Pool(a["cpu_count"])
