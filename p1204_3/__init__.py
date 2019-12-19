@@ -4,8 +4,11 @@ import sys
 import os
 import json
 import multiprocessing
+import logging
 
 from p1204_3.utils import *
+from p1204_3.model import predict_quality
+from p1204_3.generic import *
 
 
 def main(_=[]):
@@ -36,11 +39,36 @@ def main(_=[]):
         default=multiprocessing.cpu_count(),
         help="thread/cpu count",
     )
+    parser.add_argument(
+        "--device_type",
+        choices=DEVICE_TYPES,
+        default="pc",
+        help="device that is used for playout"
+    )
+
+    parser.add_argument(
+        "--device_resolution",
+        choices=DEVICE_RESOLUTIONS,
+        default="3840x2160",
+        help="resolution of the output device (width x height)"
+    )
+    parser.add_argument(
+        "--viewing_distance",
+        choices=VIEWING_DISTANCES,
+        default="1.5xH",
+        help="viewing distance relative to the display height"
+    )
+
 
     a = vars(parser.parse_args())
 
     assert_file(os.path.join(a["model"], "config.json"), "model folder is not valid")
-    print(a["video"])
+    logging.info(a["video"])
+
+    pool = multiprocessing.Pool(a["cpu_count"])
+    params = [(video, a["model"], a["device_type"], a["device_resolution"], a["viewing_distance"]) for video in a["video"]]
+    results = pool.starmap(predict_quality, params)
+
 
 
 if __name__ == "__main__":
