@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "p1204_3"
+version = "0.1.0"
+description = "ITU-T P.1204.3 reference implementation"
+readme = "README.md"
+authors = ["Steve Göring <steve.goering@tu-ilmenau.de>", "Ramachandra Rao Rakesh Rao <Rakesh-Rao.Ramachandra-Rao@tu-ilmenau.de>"]
+
+[tool.poetry.dependencies]
+python = ">=3.6"
+numpy = "^1.17.4"
+
+[tool.poetry.dev-dependencies]
+pytest = "^4.6"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+
+[tool.poetry.scripts]
+model = "p1204_3:main"
