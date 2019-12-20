@@ -8,7 +8,7 @@ ITU-T P.1204.3 is a short term video quality prediction model that uses full bit
 
 ## Input Data and Scope
 
-As input to the model you need a encoded video sequence of short duration, e.g. 8-10s (based on the ITU-T P.1204 documentation).
+As input to the model you need an encoded video sequence of short duration, e.g. 8-10s (based on the ITU-T P.1204 documentation).
 H.264, H.265 or VP9 are possible video codecs of the given video sequence.
 
 ## Usage
