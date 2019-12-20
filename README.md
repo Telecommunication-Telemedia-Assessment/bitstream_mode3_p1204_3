@@ -22,3 +22,12 @@ Otherwise check the included help, `poetry run model --help`:
 # TODO
 ```
 
+## Developers
+
+* Steve Göring
+* Rakesh Rao Ramachandra Rao
+* Alexander Raake
+* Bernhard Feiten
+* Peter List
+* Ulf Wüstenhagen
+* Werner Roubitza
