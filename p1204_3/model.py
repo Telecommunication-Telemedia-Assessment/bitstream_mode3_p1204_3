@@ -3,6 +3,7 @@ import logging
 import json
 from p1204_3.utils import assert_file
 from p1204_3.utils import assert_msg
+from p1204_3.utils import ffprobe
 from p1204_3.generic import *
 
 
@@ -22,6 +23,8 @@ def predict_quality(videofilename,
     assert_msg(viewing_distance in VIEWING_DISTANCES, f"specified viewing_distance '{viewing_distance}' is not supported, only {VIEWING_DISTANCES} possible")
     assert_msg(display_size in DISPLAY_SIZES, f"specified display_size '{display_size}' is not supported, only {DISPLAY_SIZES} possible")
 
+    ffprobe_result = ffprobe(videofilename)
+    assert_msg(ffprobe_result["codec"] in CODECS_SUPPORTED, f"your video codec is not supported by the model: {ffprobe_result['codec']}")
 
     with open(model_config_filename) as mfp:
         model_config = json.load(mfp)
