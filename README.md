@@ -22,12 +22,15 @@ Otherwise check the included help, `poetry run model --help`:
 # TODO
 ```
 
-## Developers
+## Authors
 
-* Steve Göring
-* Rakesh Rao Ramachandra Rao
-* Alexander Raake
-* Bernhard Feiten
-* Peter List
-* Ulf Wüstenhagen
-* Werner Roubitza
+Main developers:
+* Steve Göring; Technische Universität Ilmenau
+* Rakesh Rao Ramachandra Rao; Technische Universität Ilmenau
+
+Contributors:
+* Alexander Raake; Technische Universität Ilmenau
+* Bernhard Feiten; Deutsche Telekom AG
+* Peter List; Deutsche Telekom AG
+* Ulf Wüstenhagen; Deutsche Telekom AG
+* Werner Roubitza; AVEC GmbH
