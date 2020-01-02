@@ -5,6 +5,7 @@ ITU-T P.1204.3 is a short term video quality prediction model that uses full bit
 
 * python3, python3-pip
 * poetry (e.g. see https://python-poetry.org/docs/#installation)
+* ffmpeg
 
 ## Input Data and Scope
 
