@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import logging
 import json
+
 from p1204_3.utils import assert_file
 from p1204_3.utils import assert_msg
 from p1204_3.utils import ffprobe
