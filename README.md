@@ -25,7 +25,7 @@ Otherwise check the included help, `poetry run model --help`:
 ```
 
 ## Licence
-Copyright 2017-2018 Deutsche Telekom AG, Technische Universität Ilmenau
+Copyright 2017-2020 Deutsche Telekom AG, Technische Universität Ilmenau
 
 Permission is hereby granted, free of charge, to use the software for non-commercial research purposes.
 
