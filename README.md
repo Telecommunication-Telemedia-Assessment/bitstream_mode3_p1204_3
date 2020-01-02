@@ -16,7 +16,7 @@ H.264, H.265 or VP9 are possible video codecs of the given video sequence.
 ## Usage
 To use the provided tool, e.g. run
 ```bash
-poetry run model test_videos/test_video_h264.mkv
+poetry run p1204_3 test_videos/test_video_h264.mkv
 ```
 
 Otherwise check the included help, `poetry run model --help`:
@@ -24,7 +24,7 @@ Otherwise check the included help, `poetry run model --help`:
 # TODO
 ```
 
-## Licence
+## License
 Copyright 2017-2020 Deutsche Telekom AG, Technische Universität Ilmenau
 
 Permission is hereby granted, free of charge, to use the software for non-commercial research purposes.
