@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import logging
 import json
+import os
 
 from p1204_3.utils import assert_file
 from p1204_3.utils import assert_msg
@@ -11,6 +12,7 @@ from p1204_3.utils import load_serialized
 from p1204_3.utils import binarize_column
 from p1204_3.utils import load_dict_values
 from p1204_3.generic import *
+import p1204_3.features  as features
 from p1204_3.features import *
 
 
@@ -169,14 +171,14 @@ class ModeThreeMod:
         return [
             features.Bitrate,
             features.Framerate,
-            features.Resolution,
-            features.Codec,
-            features.QPValuesStatsPerGop,
-            features.BitDepth,
-            features.QPstatspersecond,
-            features.BitstreamStatFeatures,
-            features.FramesizeStatsPerGop,
-            features.AvMotionStatsPerGop
+            # features.Resolution,
+            # features.Codec,
+            # features.QPValuesStatsPerGop,
+            # features.BitDepth,
+            # features.QPstatspersecond,
+            # features.BitstreamStatFeatures,
+            # features.FramesizeStatsPerGop,
+            # features.AvMotionStatsPerGop
         ]
 
 
@@ -194,13 +196,13 @@ def run_bitstream_parser(video_seqment_file, output_dir_full_path, skipexisting=
     return report_file_name
 
 
-def extract_features(videofilename, feature_names):
-    features_per_pvs = {}
+def extract_features(videofilename, used_features, ffprobe_result, bitstream_parser_result):
+    features = {}
     for f in used_features:
-        features_per_pvs[str(f.__name__)] = f().calculate(pvs)
-    features_per_pvs["duration"] = Duration().calculate(pvs)
-    features_per_pvs["pvsid"] = pvs.pvs_id
-    return features_per_pvs
+        features[str(f.__name__)] = f().calculate(videofilename, ffprobe_result, bitstream_parser_result)
+    features["duration"] = Duration().calculate(videofilename, ffprobe_result, bitstream_parser_result)
+    features["videofilename"] = videofilename
+    return features
 
 
 def predict_quality(videofilename,
@@ -241,10 +243,10 @@ def predict_quality(videofilename,
     model = ModeThreeMod(display_res)
 
     # run bitstream parser
-    # run_bitstream_parser()
+    bitstream_parser_result = "" # run_bitstream_parser()
 
     # calculate features
-    features = extract_features(videofilename, modes.features_used)
+    features = extract_features(videofilename, model.features_used(), ffprobe_result, bitstream_parser_result)
 
     model.calculate(features, params, rf_model, display_res, device_type)
 

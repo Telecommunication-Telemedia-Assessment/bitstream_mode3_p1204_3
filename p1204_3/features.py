@@ -7,9 +7,10 @@ import pandas as pd
 
 class Bitrate:
     """
-    Average video bitrate over all segments in kBit/s
+    Average video bitrate
     """
-    def calculate(self, processed_video_sequence):
+    def calculate(self, videofilename, ffprobe_result, bitstream_parser_result):
+        return 42
         segments = processed_video_sequence.get_segments_from_qchanges()
         return np.mean([s["video_bitrate"] for s in segments])
 
@@ -18,7 +19,8 @@ class Framerate:
     """
     Average video framerate over all segments
     """
-    def calculate(self, processed_video_sequence):
+    def calculate(self, videofilename, ffprobe_result, bitstream_parser_result):
+        return 42
         segments = processed_video_sequence.get_segments_from_qchanges()
         return np.mean([s["video_frame_rate"] for s in segments])
 
@@ -51,8 +53,8 @@ class Duration:
         segments = processed_video_sequence.get_segments_from_qchanges()
         return np.mean([s["video_duration"] for s in segments])
 
-# bitstream parser related features
 
+# bitstream parser related features
 def by_gop(processed_video_sequence, columns=[], select_element=None):
     """
     a gop iterator for bitstreamstats,
