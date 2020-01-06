@@ -24,7 +24,7 @@ def extract_features(videofilename, used_features, ffprobe_result, bitstream_par
 
 
 class PVS:
-    """ wrapper to access ffprobe / bitstream statistics internally """
+    """ Wrapper to access ffprobe / bitstream statistics internally """
     def __init__(self, videofilename, ffprobe_result, bitstream_parser_result_file):
         self._videofilename = videofilename
         self._ffprobe_result = ffprobe_result
@@ -51,7 +51,7 @@ class Bitrate:
 
 class Framerate:
     """
-    video framerate
+    Video framerate
     """
     def calculate(self, processed_video_sequence):
         fps = processed_video_sequence._ffprobe_result["avg_frame_rate"]
@@ -62,8 +62,7 @@ class Framerate:
 
 class Resolution:
     """
-    Average resolution in pixels (width * height)
-    # FIXME: check
+    Resolution in pixels (width * height)
     """
     def calculate(self, processed_video_sequence):
         height = processed_video_sequence._ffprobe_result["height"]
@@ -73,8 +72,7 @@ class Resolution:
 
 class Codec:
     """
-    Video codec used, either h264, h265, vp9.
-    This assumes that the codec will not change over the sequence.
+    Video codec used, either h264, hevc, vp9.
     """
     def calculate(self, processed_video_sequence):
         codec = processed_video_sequence._ffprobe_result["codec"]
@@ -83,7 +81,7 @@ class Codec:
 
 class Duration:
     """
-    Average video duration over all segments in s
+    Video duration in seconds.
     """
     def calculate(self, processed_video_sequence):
         duration = processed_video_sequence._ffprobe_result["duration"]
@@ -91,7 +89,7 @@ class Duration:
 
 
 class BitDepth:
-    """ extracts bitdepth for a given video
+    """ Extracts bitdepth for a given video
     """
     def calculate(self, processed_video_sequence):
         # TODO: maybe simpler possible?
@@ -107,8 +105,7 @@ class BitDepth:
 
 class FramesizeStatsPerGop:
     """
-    Calculate several features based on QPValues
-        per GOP
+    Calculate Framesize statistics per GOP
     """
     def calculate(self, processed_video_sequence):
         needed = ["FrameSize"]
@@ -117,8 +114,7 @@ class FramesizeStatsPerGop:
 
 class QPValuesStatsPerGop:
     """
-    Calculate several features based on QPValues
-        per GOP
+    Calculate several features based on QPValues per GOP
     """
     def calculate(self, processed_video_sequence):
         needed = ["Av_QP", "Av_QPBB", "max_QP", "min_QP"]
@@ -127,8 +123,7 @@ class QPValuesStatsPerGop:
 
 class AvMotionStatsPerGop:
     """
-    Calculate several features based on QPValues
-        per GOP
+    Calculate motion statistics per GOP
     """
     def calculate(self, processed_video_sequence):
         needed = ['Av_Motion', 'Av_MotionDif', 'Av_MotionX', 'Av_MotionY', 'StdDev_Motion', 'StdDev_MotionDif', 'StdDev_MotionX', 'StdDev_MotionY']
@@ -137,7 +132,7 @@ class AvMotionStatsPerGop:
 
 class QPstatspersecond:
     """
-        Calculate several features based TODO
+        Calculate qp values per video second
     """
     def calculate(self, processed_video_sequence):
         logging.debug("calculate QPstatspersecond based for {}".format(processed_video_sequence))

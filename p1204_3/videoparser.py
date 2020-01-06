@@ -8,6 +8,9 @@ from p1204_3.utils import file_open
 
 
 def run_videoparser(video_seqment_file, output_dir_full_path, skipexisting=True):
+    """
+    Run video parser on a video, save report to output_dir_full_path
+    """
     logging.info("run bitstream parser for {}".format(video_seqment_file))
     report_file_name = output_dir_full_path + "/" + os.path.splitext(os.path.basename(video_seqment_file))[0] + ".json.bz2"
     if skipexisting and os.path.isfile(report_file_name):
@@ -24,6 +27,9 @@ def run_videoparser(video_seqment_file, output_dir_full_path, skipexisting=True)
 
 
 def check_or_install_videoparser():
+    """
+    Check if videoparser is installed, otherwise install it
+    """
     logging.info("check or install video parser")
     this_path = os.path.dirname(os.path.realpath(__file__))
     videoparser_directory = f"{this_path}/videoparser"

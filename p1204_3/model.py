@@ -26,6 +26,10 @@ from p1204_3.features import *
 
 
 class P1204BitstreamMode3:
+    """
+    ITU-T P.1204.3 short term video quality prediction model
+    """
+
     def __init__(self):
         self.display_res = 3840*2160
 
