@@ -217,7 +217,7 @@ class P1204BitstreamMode3:
         # assume the RF model part is locally stored in the path of model_config_filename
         rf_model = os.path.join(os.path.dirname(model_config_filename), model_config["rf"])
 
-        # load parametertic model coefficients
+        # load parametetric model coefficients
         model_coefficients = model_config["params"]
 
         display_res = float(device_resolution.split("x")[0]) * float(device_resolution.split("x")[1])
@@ -234,7 +234,7 @@ class P1204BitstreamMode3:
         logging.info(f"use feature cache file {feature_cache}")
         if not os.path.isfile(feature_cache):
             # run bitstream parser
-            bitstream_parser_result_file = run_bitstream_parser(videofilename, temporary_folder)
+            bitstream_parser_result_file = run_videoparser(videofilename, temporary_folder)
 
             # calculate features
             features = pd.DataFrame([extract_features(videofilename, model.features_used(), ffprobe_result, bitstream_parser_result_file)])

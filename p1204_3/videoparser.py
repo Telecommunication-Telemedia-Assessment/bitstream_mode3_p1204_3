@@ -7,7 +7,7 @@ from p1204_3.generic import *
 from p1204_3.utils import file_open
 
 
-def run_bitstream_parser(video_seqment_file, output_dir_full_path, skipexisting=True):
+def run_videoparser(video_seqment_file, output_dir_full_path, skipexisting=True):
     logging.info("run bitstream parser for {}".format(video_seqment_file))
     report_file_name = output_dir_full_path + "/" + os.path.splitext(os.path.basename(video_seqment_file))[0] + ".json.bz2"
     if skipexisting and os.path.isfile(report_file_name):
