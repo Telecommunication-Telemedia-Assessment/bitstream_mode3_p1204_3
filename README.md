@@ -48,4 +48,4 @@ Contributors:
 * Bernhard Feiten; Deutsche Telekom AG
 * Peter List; Deutsche Telekom AG
 * Ulf Wüstenhagen; Deutsche Telekom AG
-* Werner Rubitza; AVEC GmbH
+* Werner Rubitza; Technische Universität Ilmenau
