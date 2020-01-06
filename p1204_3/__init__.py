@@ -65,13 +65,19 @@ def main(_=[]):
         default=55,
         help="display diagonal size in inches"
     )
+    parser.add_argument(
+        "--tmp",
+        type=str,
+        default="./tmp",
+        help="temporary folder to store bitstream stats and other intermediate results",
+    )
 
     a = vars(parser.parse_args())
     logging.basicConfig(level=logging.DEBUG)
 
     assert_file(a["model"], "model folder is not valid")
     logging.info(f"handle the following videos: {len(a['video'])} \n  " + "\n  ".join(a["video"]))
-    params = [(video, a["model"], a["device_type"], a["device_resolution"], a["viewing_distance"]) for video in a["video"]]
+    params = [(video, a["model"], a["device_type"], a["device_resolution"], a["viewing_distance"], a["display_size"], a["tmp"]) for video in a["video"]]
     if a["cpu_count"] > 1:
         pool = multiprocessing.Pool(a["cpu_count"])
         results = pool.starmap(predict_quality, params)

@@ -208,7 +208,8 @@ def predict_quality(videofilename,
     device_type="pc",
     device_resolution="3840x2160",
     viewing_distance="1.5xH",
-    display_size=55):
+    display_size=55,
+    temporary_folder="tmp"):
 
     assert_file(videofilename, f"{videofilename} does not exist, please check")
     assert_file(model_config_filename, f"{model_config_filename} does not exist, please check")
