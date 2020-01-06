@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import numpy as np
 import pandas as pd
-
+from p1204_3.utils import assert_msg
 
 # ffprobe related features
 
@@ -9,20 +9,23 @@ class Bitrate:
     """
     Average video bitrate
     """
-    def calculate(self, videofilename, ffprobe_result, bitstream_parser_result):
-        return 42
-        segments = processed_video_sequence.get_segments_from_qchanges()
-        return np.mean([s["video_bitrate"] for s in segments])
-
+    def calculate(self, processed_video_sequence):
+        if hasattr(processed_video_sequence, "_ffprobe_result"):
+            bitrate = processed_video_sequence._ffprobe_result["bitrate"]
+            return float(bitrate)  # TODO: check UNIT of this value!!
+        assert_msg(False, "this should not happen")
 
 class Framerate:
     """
-    Average video framerate over all segments
+    video framerate
     """
-    def calculate(self, videofilename, ffprobe_result, bitstream_parser_result):
-        return 42
-        segments = processed_video_sequence.get_segments_from_qchanges()
-        return np.mean([s["video_frame_rate"] for s in segments])
+    def calculate(self, processed_video_sequence):
+        if hasattr(processed_video_sequence, "_ffprobe_result"):
+            fps = processed_video_sequence._ffprobe_result["avg_frame_rate"]
+            if fps != "unknown":
+                return float(fps)
+            return 60.0
+        assert_msg(False, "this should not happen")
 
 
 class Resolution:
@@ -31,8 +34,11 @@ class Resolution:
     # FIXME: check
     """
     def calculate(self, processed_video_sequence):
-        segments = processed_video_sequence.get_segments_from_qchanges()
-        return np.mean([s["video_width"] * s["video_height"] for s in segments])
+        if hasattr(processed_video_sequence, "_ffprobe_result"):
+            height = processed_video_sequence._ffprobe_result["height"]
+            width = processed_video_sequence._ffprobe_result["width"]
+            return width * height
+        assert_msg(False, "this should not happen")
 
 
 class Codec:
@@ -41,8 +47,10 @@ class Codec:
     This assumes that the codec will not change over the sequence.
     """
     def calculate(self, processed_video_sequence):
-        segments = processed_video_sequence.get_segments_from_qchanges()
-        return segments[0]["video_codec"]
+        if hasattr(processed_video_sequence, "_ffprobe_result"):
+            codec = processed_video_sequence._ffprobe_result["codec"]
+            return codec
+        assert_msg(False, "this should not happen")
 
 
 class Duration:
@@ -50,8 +58,10 @@ class Duration:
     Average video duration over all segments in s
     """
     def calculate(self, processed_video_sequence):
-        segments = processed_video_sequence.get_segments_from_qchanges()
-        return np.mean([s["video_duration"] for s in segments])
+        if hasattr(processed_video_sequence, "_ffprobe_result"):
+            duration = processed_video_sequence._ffprobe_result["duration"]
+            return duration
+        assert_msg(False, "this should not happen")
 
 
 # bitstream parser related features

@@ -104,6 +104,7 @@ def ffprobe(filename):
                     needed[n] = round(eval(needed[n]))
     needed["bitrate"] = res.get("format", {}).get("bit_rate", -1)
     needed["codec"] = needed["codec_name"]
+    needed["duration"] = res.get("format", {}).get("duration", 0)
 
     return needed
 

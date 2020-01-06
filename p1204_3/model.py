@@ -198,9 +198,15 @@ def run_bitstream_parser(video_seqment_file, output_dir_full_path, skipexisting=
 
 def extract_features(videofilename, used_features, ffprobe_result, bitstream_parser_result):
     features = {}
+    class PVS:
+        _videofilename = videofilename
+        _ffprobe_result = ffprobe_result
+        _bitstream_parser_result = bitstream_parser_result
+
+    pvs = PVS()
     for f in used_features:
-        features[str(f.__name__)] = f().calculate(videofilename, ffprobe_result, bitstream_parser_result)
-    features["duration"] = Duration().calculate(videofilename, ffprobe_result, bitstream_parser_result)
+        features[str(f.__name__)] = f().calculate(pvs)
+    features["duration"] = Duration().calculate(pvs)
     features["videofilename"] = videofilename
     return features
 
@@ -247,6 +253,7 @@ def predict_quality(videofilename,
 
     # calculate features
     features = extract_features(videofilename, model.features_used(), ffprobe_result, bitstream_parser_result)
+    print(features)
 
     model.calculate(features, params, rf_model, display_res, device_type)
 
