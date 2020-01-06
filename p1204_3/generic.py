@@ -8,3 +8,6 @@ DISPLAY_SIZES = [10, 32, 37, 5.1, 5.5, 5.8, 55, 65, 75]
 
 # ffmpeg names of codecs are used
 CODECS_SUPPORTED = ["h264", "hevc", "vp9"]
+
+# videoparser git repository
+VIDEOPARSER_REPO = "git@avt10.rz.tu-ilmenau.de:avt-pnats2avhd/videoparser_reduced.git"

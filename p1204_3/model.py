@@ -3,26 +3,33 @@ import logging
 import json
 import os
 
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.feature_selection import SelectFromModel
+
 from p1204_3.utils import assert_file
 from p1204_3.utils import assert_msg
 from p1204_3.utils import ffprobe
-from p1204_3.utils import map_to_45
-from p1204_3.utils import map_to_5
-from p1204_3.utils import load_serialized
-from p1204_3.utils import binarize_column
-from p1204_3.utils import load_dict_values
+from p1204_3.modelutils import map_to_45
+from p1204_3.modelutils import map_to_5
+from p1204_3.modelutils import r_from_mos
+from p1204_3.modelutils import mos_from_r
+from p1204_3.modelutils import load_serialized
+from p1204_3.modelutils import binarize_column
+from p1204_3.modelutils import load_dict_values
+from p1204_3.modelutils import per_sample_interval_function
 from p1204_3.generic import *
+from p1204_3.videoparser import *
+
 import p1204_3.features  as features
 from p1204_3.features import *
 
 
-class ModeThreeMod:
+
+class P1204BitstreamMode3:
     def __init__(self):
         self.display_res = 3840*2160
-    def __init__(self, display_res):
-        self.display_res = display_res
 
-    def calculate(self, prediction_features, params, rf_model, display_res, device_type):
+    def _calculate(self, prediction_features, params, rf_model, display_res, device_type):
         def mos_q_baseline_pc(features, a, b, c, d):
             quant = features["quant"]
             mos_q = a + b * np.exp(c * quant + d)
@@ -33,7 +40,7 @@ class ModeThreeMod:
             return cod_deg
 
         prediction_features = prediction_features.copy()
-        # print(prediction_features["BitDepth"])
+
         prediction_features = load_dict_values(prediction_features, "QPValuesStatsPerGop")
         prediction_features = load_dict_values(prediction_features, "QPstatspersecond")
         prediction_features = load_dict_values(prediction_features, "BitstreamStatFeatures")
@@ -87,6 +94,7 @@ class ModeThreeMod:
         prediction_features["predicted_mos_mode3_baseline"] = initial_predicted_score
 
         residual_rf_model = load_serialized(rf_model)
+
         prediction_features_rf = prediction_features.copy()
         prediction_features_rf["h264"] = 0
         prediction_features_rf["hevc"] = 0
@@ -132,9 +140,6 @@ class ModeThreeMod:
                 return row  # row["vp9"]
             return -1
 
-        # prediction_features_rf["h264"] = prediction_features_rf.apply(fill_codec, axis=1)
-        # prediction_features_rf["hevc"] = prediction_features_rf.apply(fill_codec, axis=1)
-        # prediction_features_rf["vp9"] = prediction_features_rf.apply(fill_codec, axis=1)
         prediction_features_rf = prediction_features_rf.apply(fill_codec, axis=1)
 
         prediction_features_rf = prediction_features_rf.rename(columns={"FramesizeStatsPerGop_1.0_quantil_FrameSize": "1.0_quantil_FrameSize",
@@ -164,100 +169,89 @@ class ModeThreeMod:
         predicted_score = predicted_score + residual_mos
         predicted_score = np.clip(predicted_score,1,5)
         prediction_features_rf["rf_pred"] = predicted_score
-        final_pred = 0.5*prediction_features_rf["predicted_mos_mode3_baseline"] + 0.5*prediction_features_rf["rf_pred"]
+        final_pred = 0.5 * prediction_features_rf["predicted_mos_mode3_baseline"] + 0.5*prediction_features_rf["rf_pred"]
         return final_pred
 
     def features_used(self):
         return [
             features.Bitrate,
             features.Framerate,
-            # features.Resolution,
-            # features.Codec,
-            # features.QPValuesStatsPerGop,
-            # features.BitDepth,
-            # features.QPstatspersecond,
-            # features.BitstreamStatFeatures,
-            # features.FramesizeStatsPerGop,
-            # features.AvMotionStatsPerGop
+            features.Resolution,
+            features.Codec,
+            features.QPValuesStatsPerGop,
+            features.BitDepth,
+            features.QPstatspersecond,
+            features.FramesizeStatsPerGop,
+            features.AvMotionStatsPerGop
         ]
 
 
-def run_bitstream_parser(video_seqment_file, output_dir_full_path, skipexisting=True):
-    logger.info("run bitstream parser for {}".format(video_seqment_file))
-    report_file_name = output_dir_full_path + "/" + os.path.splitext(os.path.basename(video_seqment_file))[0] + ".json.bz2"
-    if skipexisting and os.path.isfile(report_file_name):
-        return report_file_name
-    this_path = os.path.dirname(os.path.realpath(__file__))
-    cmd = this_path + """/videoparser_reduced/reduced/parser.sh "{video}" --output "{report}" """.format(video=video_seqment_file, report=report_file_name)
-    ret = os.system(cmd)
-    if ret != 0:
-        logger.error(f"there was something wrong with {video_seqment_file}")
-        return ""
-    return report_file_name
+    def predict_quality(self,
+        videofilename,
+        model_config_filename,
+        device_type="pc",
+        device_resolution="3840x2160",
+        viewing_distance="1.5xH",
+        display_size=55,
+        temporary_folder="tmp"):
 
+        assert_file(videofilename, f"{videofilename} does not exist, please check")
+        assert_file(model_config_filename, f"{model_config_filename} does not exist, please check")
 
-def extract_features(videofilename, used_features, ffprobe_result, bitstream_parser_result):
-    features = {}
-    class PVS:
-        _videofilename = videofilename
-        _ffprobe_result = ffprobe_result
-        _bitstream_parser_result = bitstream_parser_result
+        device_type = device_type.lower()
+        assert_msg(device_type in DEVICE_TYPES, f"specified device_type '{device_type}' is not supported, only {DEVICE_TYPES} possible")
+        assert_msg(device_resolution in DEVICE_RESOLUTIONS, f"specified device_resolution '{device_resolution}' is not supported, only {DEVICE_RESOLUTIONS} possible")
+        assert_msg(viewing_distance in VIEWING_DISTANCES, f"specified viewing_distance '{viewing_distance}' is not supported, only {VIEWING_DISTANCES} possible")
+        assert_msg(display_size in DISPLAY_SIZES, f"specified display_size '{display_size}' is not supported, only {DISPLAY_SIZES} possible")
 
-    pvs = PVS()
-    for f in used_features:
-        features[str(f.__name__)] = f().calculate(pvs)
-    features["duration"] = Duration().calculate(pvs)
-    features["videofilename"] = videofilename
-    return features
+        ffprobe_result = ffprobe(videofilename)
+        assert_msg(ffprobe_result["codec"] in CODECS_SUPPORTED, f"your video codec is not supported by the model: {ffprobe_result['codec']}")
 
+        with open(model_config_filename) as mfp:
+            model_config = json.load(mfp)
+        device_type = "pc" if device_type in ["pc", "tv"] else "mobile"
 
-def predict_quality(videofilename,
-    model_config_filename,
-    device_type="pc",
-    device_resolution="3840x2160",
-    viewing_distance="1.5xH",
-    display_size=55,
-    temporary_folder="tmp"):
+        # select only the required config for the device type
+        model_config = model_config[device_type]
 
-    assert_file(videofilename, f"{videofilename} does not exist, please check")
-    assert_file(model_config_filename, f"{model_config_filename} does not exist, please check")
+        # assume the RF model part is locally stored in the path of model_config_filename
+        rf_model = os.path.join(os.path.dirname(model_config_filename), model_config["rf"])
 
-    device_type = device_type.lower()
-    assert_msg(device_type in DEVICE_TYPES, f"specified device_type '{device_type}' is not supported, only {DEVICE_TYPES} possible")
-    assert_msg(device_resolution in DEVICE_RESOLUTIONS, f"specified device_resolution '{device_resolution}' is not supported, only {DEVICE_RESOLUTIONS} possible")
-    assert_msg(viewing_distance in VIEWING_DISTANCES, f"specified viewing_distance '{viewing_distance}' is not supported, only {VIEWING_DISTANCES} possible")
-    assert_msg(display_size in DISPLAY_SIZES, f"specified display_size '{display_size}' is not supported, only {DISPLAY_SIZES} possible")
+        # load parametertic model coefficients
+        model_coefficients = model_config["params"]
 
-    ffprobe_result = ffprobe(videofilename)
-    assert_msg(ffprobe_result["codec"] in CODECS_SUPPORTED, f"your video codec is not supported by the model: {ffprobe_result['codec']}")
+        display_res = float(device_resolution.split("x")[0]) * float(device_resolution.split("x")[1])
 
-    with open(model_config_filename) as mfp:
-        model_config = json.load(mfp)
-    device_type = "pc" if device_type in ["pc", "tv"] else "mobile"
+        self.display_res = display_res
 
-    # select only the required config for the device type
-    model_config = model_config[device_type]
+        check_or_install_videoparser()
+        os.makedirs(temporary_folder, exist_ok=True)
 
-    # assume the RF model part is locally stored in the path of model_config_filename
-    rf_model = os.path.join(os.path.dirname(model_config_filename), model_config["rf"])
+        feature_cache = os.path.join(
+            temporary_folder,
+            os.path.splitext(os.path.basename(videofilename))[0] + "_feat.pkl"
+        )
+        logging.info(f"use feature cache file {feature_cache}")
+        if not os.path.isfile(feature_cache):
+            # run bitstream parser
+            bitstream_parser_result_file = run_bitstream_parser(videofilename, temporary_folder)
 
-    # load parametertic model coefficients
-    model_coefficients = model_config["params"]
+            # calculate features
+            features = pd.DataFrame([extract_features(videofilename, model.features_used(), ffprobe_result, bitstream_parser_result_file)])
+            features.to_pickle(feature_cache)
+        else:
+            logging.info("features are already cached, extraction skipped")
+            features = pd.read_pickle(feature_cache)
 
-    display_res = float(device_resolution.split("x")[0]) * float(device_resolution.split("x")[1])
+        logging.info("features extracted")
 
-    model = ModeThreeMod(display_res)
+        per_sequence = self._calculate(features, model_coefficients, rf_model, display_res, device_type)
 
-    # run bitstream parser
-    bitstream_parser_result = "" # run_bitstream_parser()
-
-    # calculate features
-    features = extract_features(videofilename, model.features_used(), ffprobe_result, bitstream_parser_result)
-    print(features)
-
-    model.calculate(features, params, rf_model, display_res, device_type)
-
-    return {
-        "per_second": [42],
-        "per_sequence": 42
-    }
+        per_second = per_sample_interval_function(
+            per_sequence,
+            features
+        )
+        return {
+            "per_second": [float(x) for x in per_second],
+            "per_sequence": float(per_sequence.values[0])
+        }

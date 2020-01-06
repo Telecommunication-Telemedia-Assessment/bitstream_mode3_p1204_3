@@ -5,8 +5,8 @@ import logging
 import shutil
 import subprocess
 import json
-
-from sklearn.externals import joblib
+import bz2
+import gzip
 
 
 color_codes = {
@@ -71,6 +71,16 @@ def assert_file(filename, fail_message):
     assert_msg(os.path.isfile(filename), fail_message)
 
 
+def file_open(filename, mode="r"):
+    """ Open a file, and if you add bz2 to filename a compressed file will be opened
+    """
+    if "bz2" in filename:
+        return bz2.open(filename, mode + "t")
+    if "gz" in filename:
+        return gzip.open(filename, mode + "t")
+    return open(filename, mode)
+
+
 def ffprobe(filename):
     """ run ffprobe to get some information of a given video file
     """
@@ -94,7 +104,8 @@ def ffprobe(filename):
               "width": "unknown",
               "height": "unknown",
               "avg_frame_rate": "unknown",
-              "codec_name": "unknown"
+              "codec_name": "unknown",
+              "profile": "unknown"
              }
     for stream in res["streams"]:
         for n in needed:
@@ -105,75 +116,9 @@ def ffprobe(filename):
     needed["bitrate"] = res.get("format", {}).get("bit_rate", -1)
     needed["codec"] = needed["codec_name"]
     needed["duration"] = res.get("format", {}).get("duration", 0)
-
+    needed["video_profile"] = needed["profile"]
     return needed
 
 
-def map_to_45(x):
-    """
-    (y-y1)/(x-x1) = (y2-y1)/(x2-x1) ---> x1 = 1, x2 = 5, y1 = 1, y2 = 4.5
-
-    output = output_start + ((output_end - output_start) / (input_end - input_start)) * (input - input_start)
-
-    """
-
-    input_start = 1
-    input_end = 5
-    output_start = 1
-    output_end = 4.5
-
-    if x >= 5:
-        return 4.5
-
-    return output_start + ((output_end - output_start) / (input_end - input_start)) * (x - input_start)
-
-def map_to_5(x):
-    """
-    (y-y1)/(x-x1) = (y2-y1)/(x2-x1) ---> x1 = 1, x2 = 4.5, y1 = 1, y2 = 5
-
-    output = output_start + ((output_end - output_start) / (input_end - input_start)) * (input - input_start)
-
-    """
-
-    input_start = 1
-    input_end = 4.5
-    output_start = 1
-    output_end = 5
-
-    if x >= 4.5:
-        return 5
-
-    return output_start + ((output_end - output_start) / (input_end - input_start)) * (x - input_start)
 
 
-def load_serialized(filename_with_path):
-    """ load a serialized model """
-    if not os.path.isfile(filename_with_path):
-        print("{} is not a valid file, please check".format(filename_with_path))
-        return
-    return joblib.load(filename_with_path)
-
-
-def binarize_column(dataframe, column, prefix=""):
-    """
-    add separate binarized columns to a given dataframe for each uniqe value of column
-    """
-    values = dataframe[column].unique()
-    for value in values:
-        dataframe[prefix + value] = dataframe[column].map(lambda x: 1 if  x == value else 0)
-    return dataframe
-
-
-def load_dict_values(dataframe, column):
-    """
-    load values that are nested as a dictionary for a specific column
-    """
-    if column not in dataframe.columns:
-        return dataframe
-    _values = list(dataframe[column].apply(lambda x: json.loads(x) if type(x) == str else x).values)
-    _values = pd.DataFrame(_values)
-
-    for x in _values.columns:
-        dataframe[column + "_" + x] = _values[x].values
-
-    return dataframe

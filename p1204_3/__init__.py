@@ -8,8 +8,26 @@ import logging
 import itertools
 
 from p1204_3.utils import *
-from p1204_3.model import predict_quality
+from p1204_3.model import P1204BitstreamMode3
 from p1204_3.generic import *
+
+
+def predict_quality(videofilename,
+        model_config_filename,
+        device_type="pc",
+        device_resolution="3840x2160",
+        viewing_distance="1.5xH",
+        display_size=55,
+        temporary_folder="tmp"):
+    return P1204BitstreamMode3().predict_quality(
+        videofilename,
+        model_config_filename,
+        device_type,
+        device_resolution,
+        viewing_distance,
+        display_size,
+        temporary_folder
+    )
 
 
 def main(_=[]):
@@ -76,7 +94,7 @@ def main(_=[]):
     logging.basicConfig(level=logging.DEBUG)
 
     assert_file(a["model"], "model folder is not valid")
-    logging.info(f"handle the following videos: {len(a['video'])} \n  " + "\n  ".join(a["video"]))
+    logging.info(f"handle the following videos (# {len(a['video'])}): \n  " + "\n  ".join(a["video"]))
     params = [(video, a["model"], a["device_type"], a["device_resolution"], a["viewing_distance"], a["display_size"], a["tmp"]) for video in a["video"]]
     if a["cpu_count"] > 1:
         pool = multiprocessing.Pool(a["cpu_count"])
@@ -84,6 +102,7 @@ def main(_=[]):
     else:
         results = list(itertools.starmap(predict_quality, params))
 
+    print(results)
 
 if __name__ == "__main__":
     sys.exit(main(sys.argv[1:]))
