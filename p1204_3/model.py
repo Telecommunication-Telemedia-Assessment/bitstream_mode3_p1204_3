@@ -217,7 +217,6 @@ def predict_quality(videofilename,
     device_type = device_type.lower()
     assert_msg(device_type in DEVICE_TYPES, f"specified device_type '{device_type}' is not supported, only {DEVICE_TYPES} possible")
     assert_msg(device_resolution in DEVICE_RESOLUTIONS, f"specified device_resolution '{device_resolution}' is not supported, only {DEVICE_RESOLUTIONS} possible")
-    assert_msg("x" in device_resolution, f"specified device_resolution '{device_resolution}' is not supported, only {DEVICE_RESOLUTIONS} possible, check 'x' is required")
     assert_msg(viewing_distance in VIEWING_DISTANCES, f"specified viewing_distance '{viewing_distance}' is not supported, only {VIEWING_DISTANCES} possible")
     assert_msg(display_size in DISPLAY_SIZES, f"specified display_size '{display_size}' is not supported, only {DISPLAY_SIZES} possible")
 
