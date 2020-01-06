@@ -1,1 +1,5 @@
-p1204_3/__pycache__
+**/__pycache__/
+p1204_3.egg-info/
+**/.ipynb_checkpoints/
+p1204_3/videoparser/
+tmp/
