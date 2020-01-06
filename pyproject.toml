@@ -9,13 +9,15 @@ license ="LICENCE.md"
 [tool.poetry.dependencies]
 python = "^3.6"
 numpy = "^1.17.4"
+scikit-learn = "^0.22.1"
+scipy = "^1.4.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^4.6"
 
+[tool.poetry.scripts]
+p1204_3 = "p1204_3:main"
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
 
-[tool.poetry.scripts]
-p1204_3 = "p1204_3:main"
