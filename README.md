@@ -3,12 +3,19 @@ ITU-T P.1204.3 is a short term video quality prediction model that uses full bit
 
 ## Requirements
 
-* python3, python3-pip
-* poetry (e.g. see https://python-poetry.org/docs/#installation)
+* python3, python3-pip, python3-venv
+* poetry (e.g. pip3 install poetry)
 * ffmpeg
 * videoparser (see XYZ), will be installed automatically
     * all dependencies for the videoparser are required
 * git
+
+Run the following command:
+
+```bash
+poetry install
+```
+(if you have problems with pip, run pip3 install --user -U pip)
 
 ## Input Data and Scope
 
