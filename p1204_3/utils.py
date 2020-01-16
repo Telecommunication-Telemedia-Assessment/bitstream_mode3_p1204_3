@@ -120,5 +120,7 @@ def ffprobe(filename):
     return needed
 
 
-
+def json_store(outputfile, jsonobject):
+    with open(outputfile, "w") as ofp:
+        json.dump(jsonobject, ofp, indent=4, sort_keys=True)
 

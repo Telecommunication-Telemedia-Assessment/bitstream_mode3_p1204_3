@@ -256,6 +256,8 @@ class P1204BitstreamMode3:
             features
         )
         return {
+            "video_full_path": videofilename,
+            "video_basename": os.path.basename(videofilename),
             "per_second": [float(x) for x in per_second],
             "per_sequence": float(per_sequence.values[0])
         }

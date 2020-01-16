@@ -103,6 +103,14 @@ def main(_=[]):
         results = list(itertools.starmap(predict_quality, params))
 
     print(results)
+    os.makedirs(a["result_folder"], exist_ok=True)
+    for result in results:
+        reportname = os.path.join(
+            a["result_folder"],
+            os.path.splitext(result["video_basename"])[0] + ".json"
+        )
+        json_store(reportname, result)
+
 
 if __name__ == "__main__":
     sys.exit(main(sys.argv[1:]))
