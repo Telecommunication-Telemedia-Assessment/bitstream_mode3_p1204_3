@@ -103,6 +103,7 @@ def main(_=[]):
         results = list(itertools.starmap(predict_quality, params))
 
     print(results)
+    logging.info(f"""store all results to {a["result_folder"]}""")
     os.makedirs(a["result_folder"], exist_ok=True)
     for result in results:
         reportname = os.path.join(

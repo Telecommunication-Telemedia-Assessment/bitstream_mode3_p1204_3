@@ -241,7 +241,7 @@ class P1204BitstreamMode3:
             bitstream_parser_result_file = run_videoparser(videofilename, temporary_folder)
 
             # calculate features
-            features = pd.DataFrame([extract_features(videofilename, model.features_used(), ffprobe_result, bitstream_parser_result_file)])
+            features = pd.DataFrame([extract_features(videofilename, self.features_used(), ffprobe_result, bitstream_parser_result_file)])
             features.to_pickle(feature_cache)
         else:
             logging.info("features are already cached, extraction skipped")
