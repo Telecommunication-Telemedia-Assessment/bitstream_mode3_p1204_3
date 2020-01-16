@@ -15,7 +15,7 @@ Run the following command:
 ```bash
 poetry install
 ```
-(if you have problems with pip, run pip3 install --user -U pip)
+(if you have problems with pip, run `pip3 install --user -U pip`)
 
 ## Input Data and Scope
 
