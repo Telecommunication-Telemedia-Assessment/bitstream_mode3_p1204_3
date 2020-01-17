@@ -93,13 +93,10 @@ class BitDepth:
     """
     def calculate(self, processed_video_sequence):
         # TODO: maybe simpler possible?
+        bitdepth = 8 # fallback
         for frame in processed_video_sequence.get_frames_from_bitstream_stats():
             bitdepth = frame["Seq"]["BitDepth"]
             break
-        codec = Codec().calculate(processed_video_sequence)
-        if codec == "vp9" and bitdepth == 0:
-            # TODO: fix to recognize correct BitDepth of vp9
-            bitdepth = 8 if tmp["video_profile"] < 2 else 10
         return bitdepth
 
 
