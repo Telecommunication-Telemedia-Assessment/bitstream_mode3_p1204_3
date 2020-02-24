@@ -21,7 +21,7 @@ def run_videoparser(video_seqment_file, output_dir_full_path, skipexisting=True)
     if ret != 0:
         logging.error(f"there was something wrong with {video_seqment_file}")
         logging.error(f"please check the following command: \n {cmd}")
-        sys.exit(0)
+        # sys.exit(0)
         return ""
     return report_file_name
 

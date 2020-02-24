@@ -240,6 +240,10 @@ class P1204BitstreamMode3:
             # run bitstream parser
             bitstream_parser_result_file = run_videoparser(videofilename, temporary_folder)
 
+            if bitstream_parser_result_file == "":
+                logging.error("No bitstream stats file")
+                return {}
+
             # calculate features
             features = pd.DataFrame([extract_features(videofilename, self.features_used(), ffprobe_result, bitstream_parser_result_file)])
             features.to_pickle(feature_cache)

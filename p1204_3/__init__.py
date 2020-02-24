@@ -106,11 +106,12 @@ def main(_=[]):
     logging.info(f"""store all results to {a["result_folder"]}""")
     os.makedirs(a["result_folder"], exist_ok=True)
     for result in results:
-        reportname = os.path.join(
-            a["result_folder"],
-            os.path.splitext(result["video_basename"])[0] + ".json"
-        )
-        json_store(reportname, result)
+        if "video_basename" in result:
+            reportname = os.path.join(
+                a["result_folder"],
+                os.path.splitext(result["video_basename"])[0] + ".json"
+            )
+            json_store(reportname, result)
 
 
 if __name__ == "__main__":
