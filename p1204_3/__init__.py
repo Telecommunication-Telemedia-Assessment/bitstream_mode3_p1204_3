@@ -106,7 +106,7 @@ def main(_=[]):
     logging.info(f"""store all results to {a["result_folder"]}""")
     os.makedirs(a["result_folder"], exist_ok=True)
     for result in results:
-        if result == {}:
+        if result == {} or "video_basename" not in result:
             # in case the video could not be processed, just ignore it
             continue
         reportname = os.path.join(
