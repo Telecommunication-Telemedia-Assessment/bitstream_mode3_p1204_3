@@ -89,7 +89,7 @@ def ffprobe(filename):
 
     if not os.path.isfile(filename):
         raise Exception("{} is not a valid file".format(filename))
-
+    
     cmd = "ffprobe -show_format -select_streams v:0 -show_streams -of json '{filename}' 2>/dev/null".format(filename=filename)
 
     res = shell_call(cmd).strip()
