@@ -2,6 +2,7 @@
 p1204_3.egg-info/
 **/.ipynb_checkpoints/
 p1204_3/videoparser/
+p1204_3/bitstream_mode3_videoparser/
 tmp/
 reports/
 

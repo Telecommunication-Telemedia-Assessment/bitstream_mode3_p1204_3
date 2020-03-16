@@ -10,4 +10,4 @@ DISPLAY_SIZES = [10, 32, 37, 5.1, 5.5, 5.8, 55, 65, 75]
 CODECS_SUPPORTED = ["h264", "hevc", "vp9"]
 
 # videoparser git repository TODO: change to final position
-VIDEOPARSER_REPO = "git@avt10.rz.tu-ilmenau.de:avt-pnats2avhd/videoparser_reduced.git"
+VIDEOPARSER_REPO = "git@avt10.rz.tu-ilmenau.de:avt-pnats2avhd/bitstream_mode3_videoparser.git"

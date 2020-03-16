@@ -16,7 +16,7 @@ def run_videoparser(video_seqment_file, output_dir_full_path, skipexisting=True)
     if skipexisting and os.path.isfile(report_file_name):
         return report_file_name
     this_path = os.path.dirname(os.path.realpath(__file__))
-    cmd = this_path + """/videoparser/reduced/parser.sh "{video}" --output "{report}" """.format(video=video_seqment_file, report=report_file_name)
+    cmd = this_path + """/bitstream_mode3_videoparser/parser.sh "{video}" --output "{report}" """.format(video=video_seqment_file, report=report_file_name)
     ret = os.system(cmd)
     if ret != 0:
         logging.error(f"there was something wrong with {video_seqment_file}")
@@ -31,11 +31,11 @@ def check_or_install_videoparser():
     """
     logging.info("check or install video parser")
     this_path = os.path.dirname(os.path.realpath(__file__))
-    videoparser_directory = f"{this_path}/videoparser"
+    videoparser_directory = f"{this_path}/bitstream_mode3_videoparser"
     if os.path.isdir(videoparser_directory):
         logging.info("video parser is checked out")
         return
     os.system(f"git clone {VIDEOPARSER_REPO} {videoparser_directory}")
-    os.system(f"{videoparser_directory}/reduced/build_and_test.sh")
+    os.system(f"{videoparser_directory}/build_and_test.sh")
 
 
