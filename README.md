@@ -26,7 +26,17 @@ Currently the model is only tested on Ubuntu >= 18.04.
 * poetry (e.g. pip3 install poetry)
 * ffmpeg
 * [bitstream_mode3_videoparser](https://github.com/Telecommunication-Telemedia-Assessment/bitstream_mode3_videoparser), will be installed automatically
-    * all dependencies for the bitstream_mode3_videoparser are required, thus please checkout the installation guide of the bitstream_mode3_videoparser
+    * all dependencies for the bitstream_mode3_videoparser are required
+
+To install all requirements under Ubuntu please run the following commands:
+
+```bash
+sudo apt-get update -qq
+sudo apt-get install -y -qq python3 python3-venv python3-numpy python3-pip git scons ffmpeg
+pip3 install --user poetry
+# ffmpeg/videoparser specific
+sudo apt-get -y install autoconf automake build-essential libass-dev libfreetype6-dev libsdl2-dev libtheora-dev libtool libva-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev pkg-config texinfo wget zlib1g-dev yasm
+```
 
 After cloning this repository and installation of all requirements, run the following command:
 
@@ -34,7 +44,7 @@ After cloning this repository and installation of all requirements, run the foll
 poetry install
 ```
 
-If you have problems with pip, run `pip3 install --user -U pip`.
+If you have problems with pip and poetry, run `pip3 install --user -U pip`.
 
 ## Input Data and Scope
 
