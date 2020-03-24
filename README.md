@@ -1,26 +1,46 @@
 # ITU-T P.1204.3 Reference Implementation
-ITU-T P.1204.3 is a short term video quality prediction model that uses full bitstream data to estimate video quality scores.
+ITU-T P.1204.3 is a short term video quality prediction model that uses full bitstream data to estimate video quality scores on a segment level.
+
+If you use this model in any of your research work, please cite the following paper:
+
+```
+@inproceedings{rao2020p1204,
+  author={Rakesh Rao {Ramachandra Rao} and Steve G\"oring and Werner Robitza and Alexander Raake and Bernhard Feiten and Peter List and Ulf Wüstenhagen},
+  title={Bitstream-based Model Standard for 4K/UHD: ITU-T P.1204.3 -- Model Details, Evaluation, Analysis and Open Source Implementation},
+  BOOKTITLE={2020 Twelfth International Conference on Quality of Multimedia Experience (QoMEX)},
+  address="Athlone, Irland",
+  days=26,
+  month=May,
+  year=2020,
+}
+```
+
+Moreover a full description of the models internal structure is provided in the paper.
 
 ## Requirements
+To be able to run the model you need to install some software.
+Currently the model is only tested on Ubuntu >= 18.04.
 
+* git
 * python3, python3-pip, python3-venv
 * poetry (e.g. pip3 install poetry)
 * ffmpeg
-* videoparser (see XYZ), will be installed automatically
-    * all dependencies for the videoparser are required
-* git
+* [bitstream_mode3_videoparser](https://github.com/Telecommunication-Telemedia-Assessment/bitstream_mode3_videoparser), will be installed automatically
+    * all dependencies for the bitstream_mode3_videoparser are required, thus please checkout the installation guide of the bitstream_mode3_videoparser
 
-Run the following command:
+After cloning this repository and installation of all requirements, run the following command:
 
 ```bash
 poetry install
 ```
-(if you have problems with pip, run `pip3 install --user -U pip`)
+
+If you have problems with pip, run `pip3 install --user -U pip`.
 
 ## Input Data and Scope
 
-As input to the model you need an encoded video sequence of short duration, e.g. 8-10s (based on the ITU-T P.1204 documentation).
+As input to the model you need an encoded video sequence of short duration, e.g. 8-10s (based on the ITU-T P.1204 documentation), e.g. checkout the `test_videos` folder.
 H.264, H.265 or VP9 are supported video codecs of the input video sequence.
+For example the [AVT-VQDB-UHD-1](https://github.com/Telecommunication-Telemedia-Assessment/AVT-VQDB-UHD-1) can be used to validate the model performance, as it is shown in the paper `rao2020p1204`.
 
 ## Usage
 To use the provided tool, e.g. run
@@ -67,6 +87,9 @@ optional arguments:
 stg7, rrao 2019
 
 ```
+
+Most parameter default settings are for the PC/TV use case, change to different use cases based on the scope of the recommendation.
+*Important:* in contrast to the official ITU-T P.1204.3 description we provided here the random forest part as a serialized output of scikit-learn, a generated python script including the estimated trees can be found on the [ITU-T P.1204.3 page](https://www.itu.int/rec/T-REC-P.1204.3/en).
 
 ## License
 Copyright 2017-2020 Deutsche Telekom AG, Technische Universität Ilmenau
