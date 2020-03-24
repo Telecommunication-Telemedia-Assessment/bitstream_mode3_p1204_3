@@ -1,0 +1,2 @@
+The following videos are test videos, they are all based on
+a short 8-10s cut from [Big Bucks Bunny](https://peach.blender.org/about/): [Creative Commons Attribution 3.0](http://creativecommons.org/licenses/by/3.0/)
