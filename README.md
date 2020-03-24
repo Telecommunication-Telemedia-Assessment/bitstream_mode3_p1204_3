@@ -102,7 +102,7 @@ Most parameter default settings are for the PC/TV use case, change to different 
 *Important:* in contrast to the official ITU-T P.1204.3 description we provided here the random forest part as a serialized output of scikit-learn, a generated python script including the estimated trees can be found on the [ITU-T P.1204.3 page](https://www.itu.int/rec/T-REC-P.1204.3/en).
 
 ## License
-Copyright 2017-2020 Deutsche Telekom AG, Technische Universität Ilmenau
+Copyright 2017-2020 Technische Universität Ilmenau, Deutsche Telekom AG
 
 Permission is hereby granted, free of charge, to use the software for non-commercial research purposes.
 
