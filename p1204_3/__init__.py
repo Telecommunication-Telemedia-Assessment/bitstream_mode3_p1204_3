@@ -102,7 +102,7 @@ def main(_=[]):
     else:
         results = list(itertools.starmap(predict_quality, params))
 
-    print(results)
+    print(json.dumps(results, indent=4, sort_keys=True))
     logging.info(f"""store all results to {a["result_folder"]}""")
     os.makedirs(a["result_folder"], exist_ok=True)
     for result in results:
