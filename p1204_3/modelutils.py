@@ -6,7 +6,9 @@ import logging
 import pandas as pd
 import numpy as np
 import scipy.stats
-from sklearn.externals import joblib
+import sklearn_json as skljson
+
+from p1204_3.utils import json_load
 
 
 MOS_MAX = 4.9
@@ -77,7 +79,34 @@ def load_serialized(filename_with_path):
     if not os.path.isfile(filename_with_path):
         print("{} is not a valid file, please check".format(filename_with_path))
         return
-    return joblib.load(filename_with_path)
+    feature_selection_filename = filename_with_path.replace("_reg.json", "_fs.json")
+    feature_selection = None
+    if os.path.isfile(feature_selection_filename):
+        feature_selection = json_load(feature_selection_filename)
+
+    regressor = skljson.from_json(filename_with_path)
+
+    class Model:
+        """ wrapper to the serialized scikit learn model,
+        that uses feature selection in the first step
+        """
+        def __init__(self, regressor, fs=None):
+            self._regressor = regressor
+            self._fs = fs
+        def feature_select(self, X):
+            fs = np.array(self._fs)
+            X = np.array(X)
+            _X = []
+            # perform selection for each input row
+            for x in X:
+                _X.append(x[fs])
+            return _X
+        def predict(self, X):
+            if self._fs:
+                X = self.feature_select(X)
+            return self._regressor.predict(X)
+
+    return Model(regressor, feature_selection)
 
 
 def binarize_column(dataframe, column, prefix=""):

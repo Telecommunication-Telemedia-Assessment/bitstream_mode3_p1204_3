@@ -2,13 +2,12 @@
 import logging
 import json
 import os
-
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.feature_selection import SelectFromModel
+import datetime
 
 from p1204_3.utils import assert_file
 from p1204_3.utils import assert_msg
 from p1204_3.utils import ffprobe
+from p1204_3.utils import json_load
 from p1204_3.modelutils import map_to_45
 from p1204_3.modelutils import map_to_5
 from p1204_3.modelutils import r_from_mos
@@ -20,9 +19,8 @@ from p1204_3.modelutils import per_sample_interval_function
 from p1204_3.generic import *
 from p1204_3.videoparser import *
 
-import p1204_3.features  as features
+import p1204_3.features as features
 from p1204_3.features import *
-
 
 
 class P1204BitstreamMode3:
@@ -211,8 +209,8 @@ class P1204BitstreamMode3:
         ffprobe_result = ffprobe(videofilename)
         assert_msg(ffprobe_result["codec"] in CODECS_SUPPORTED, f"your video codec is not supported by the model: {ffprobe_result['codec']}")
 
-        with open(model_config_filename) as mfp:
-            model_config = json.load(mfp)
+        model_config = json_load(model_config_filename)
+
         device_type = "pc" if device_type in ["pc", "tv"] else "mobile"
 
         # select only the required config for the device type
@@ -262,5 +260,6 @@ class P1204BitstreamMode3:
             "video_full_path": videofilename,
             "video_basename": os.path.basename(videofilename),
             "per_second": [float(x) for x in per_second],
-            "per_sequence": float(per_sequence.values[0])
+            "per_sequence": float(per_sequence.values[0]),
+            "date": str(datetime.datetime.now())
         }
