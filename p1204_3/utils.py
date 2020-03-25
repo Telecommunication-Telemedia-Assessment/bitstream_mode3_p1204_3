@@ -89,7 +89,7 @@ def ffprobe(filename):
 
     if not os.path.isfile(filename):
         raise Exception("{} is not a valid file".format(filename))
-    
+
     cmd = "ffprobe -show_format -select_streams v:0 -show_streams -of json '{filename}' 2>/dev/null".format(filename=filename)
 
     res = shell_call(cmd).strip()
@@ -123,4 +123,9 @@ def ffprobe(filename):
 def json_store(outputfile, jsonobject):
     with open(outputfile, "w") as ofp:
         json.dump(jsonobject, ofp, indent=4, sort_keys=True)
+
+
+def json_load(jsonfile):
+    with open(jsonfile) as jfp:
+        return json.load(jfp)
 
