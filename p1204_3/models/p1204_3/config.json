@@ -1,6 +1,6 @@
 {
   "mobile": {
-    "rf": "mode3_mobile_20trees_depth_8.npy",
+    "rf": "mode3_mobile_20trees_depth_8_reg.json",
     "params": {
       "h264_10bit_a": 4.434593246176951,
       "h264_10bit_b": -0.7183101538007569,
@@ -55,7 +55,7 @@
     }
   },
   "pc": {
-    "rf": "mode3_pc_20trees_depth_8.npy",
+    "rf": "mode3_pc_20trees_depth_8_reg.json",
     "params": {
       "h264_10bit_a": 4.473860432716601,
       "h264_10bit_b": -0.9393705761863351,
