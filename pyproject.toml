@@ -8,10 +8,11 @@ license ="LICENCE.md"
 
 [tool.poetry.dependencies]
 python = "^3.6"
-numpy = "^1.17.4"
-scikit-learn = "0.19.1"
+numpy = "^1.18.2"
+scikit-learn = "^0.22.2"
 scipy = "^1.4.1"
 pandas = "^0.25.3"
+sklearn-json = "^0.1.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^4.6"
@@ -19,6 +20,6 @@ pytest = "^4.6"
 [tool.poetry.scripts]
 p1204_3 = "p1204_3:main"
 [build-system]
-requires = ["poetry>=0.12"]
+requires = ["poetry>=1.0.3"]
 build-backend = "poetry.masonry.api"
 
