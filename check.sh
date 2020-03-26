@@ -1,5 +1,5 @@
 #!/bin/bash
-#poetry install
+poetry install
 rm -rf test_videos/reports_new/*.json
 poetry run p1204_3 --result_folder test_videos/reports_new \
     --tmp test_videos/parsed \
