@@ -16,14 +16,14 @@ logInfo() {
 
 report_diff() {
     # ignore the "date" field in the reports
-    python <<HEREDOC
+    python3 <<HEREDOC
 import json
 with open("$1") as fp:
     r1 = json.load(fp)
 with open("$2") as fp:
     r2 = json.load(fp)
 dc = 0
-for k in set(r1.keys() + r2.keys()) - set(["date"]):
+for k in set(list(r1.keys()) + list(r2.keys())) - set(["date"]):
     if k in r1 and k in r2:
         if r1[k] != r2[k]:
             dc +=1
