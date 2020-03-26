@@ -23,29 +23,14 @@ color_codes = {
 
 
 logging.addLevelName(
-    logging.CRITICAL,
-    color_codes["red"]
-    + logging.getLevelName(logging.CRITICAL)
-    + color_codes["end_code"],
+    logging.CRITICAL, color_codes["red"] + logging.getLevelName(logging.CRITICAL) + color_codes["end_code"]
 )
+logging.addLevelName(logging.ERROR, color_codes["red"] + logging.getLevelName(logging.ERROR) + color_codes["end_code"])
 logging.addLevelName(
-    logging.ERROR,
-    color_codes["red"] + logging.getLevelName(logging.ERROR) + color_codes["end_code"],
+    logging.WARNING, color_codes["yellow"] + logging.getLevelName(logging.WARNING) + color_codes["end_code"]
 )
-logging.addLevelName(
-    logging.WARNING,
-    color_codes["yellow"]
-    + logging.getLevelName(logging.WARNING)
-    + color_codes["end_code"],
-)
-logging.addLevelName(
-    logging.INFO,
-    color_codes["green"] + logging.getLevelName(logging.INFO) + color_codes["end_code"],
-)
-logging.addLevelName(
-    logging.DEBUG,
-    color_codes["blue"] + logging.getLevelName(logging.DEBUG) + color_codes["end_code"],
-)
+logging.addLevelName(logging.INFO, color_codes["green"] + logging.getLevelName(logging.INFO) + color_codes["end_code"])
+logging.addLevelName(logging.DEBUG, color_codes["blue"] + logging.getLevelName(logging.DEBUG) + color_codes["end_code"])
 
 
 def shell_call(call):
@@ -90,7 +75,9 @@ def ffprobe(filename):
     if not os.path.isfile(filename):
         raise Exception("{} is not a valid file".format(filename))
 
-    cmd = "ffprobe -show_format -select_streams v:0 -show_streams -of json '{filename}' 2>/dev/null".format(filename=filename)
+    cmd = "ffprobe -show_format -select_streams v:0 -show_streams -of json '{filename}' 2>/dev/null".format(
+        filename=filename
+    )
 
     res = shell_call(cmd).strip()
 
@@ -99,14 +86,15 @@ def ffprobe(filename):
 
     res = json.loads(res)
 
-    needed = {"pix_fmt": "unknown",
-              "bits_per_raw_sample": "unknown",
-              "width": "unknown",
-              "height": "unknown",
-              "avg_frame_rate": "unknown",
-              "codec_name": "unknown",
-              "profile": "unknown"
-             }
+    needed = {
+        "pix_fmt": "unknown",
+        "bits_per_raw_sample": "unknown",
+        "width": "unknown",
+        "height": "unknown",
+        "avg_frame_rate": "unknown",
+        "codec_name": "unknown",
+        "profile": "unknown",
+    }
     for stream in res["streams"]:
         for n in needed:
             if n in stream:
@@ -128,4 +116,3 @@ def json_store(outputfile, jsonobject):
 def json_load(jsonfile):
     with open(jsonfile) as jfp:
         return json.load(jfp)
-

@@ -11,7 +11,6 @@ from p1204_3.utils import file_open
 from p1204_3.modelutils import stats_per_gop
 
 
-
 def extract_features(videofilename, used_features, ffprobe_result, bitstream_parser_result_file):
     """ extract all specified features for a given video file """
     features = {}
@@ -25,6 +24,7 @@ def extract_features(videofilename, used_features, ffprobe_result, bitstream_par
 
 class PVS:
     """ Wrapper to access ffprobe / bitstream statistics internally """
+
     def __init__(self, videofilename, ffprobe_result, bitstream_parser_result_file):
         self._videofilename = videofilename
         self._ffprobe_result = ffprobe_result
@@ -36,6 +36,7 @@ class PVS:
             bitstream_stats = json.load(bitstat)
 
         return bitstream_stats
+
     def __str__(self):
         return self._videofilename
 
@@ -44,6 +45,7 @@ class Bitrate:
     """
     Average video bitrate
     """
+
     def calculate(self, processed_video_sequence):
         bitrate = processed_video_sequence._ffprobe_result["bitrate"]
         return float(bitrate) / 1024
@@ -53,6 +55,7 @@ class Framerate:
     """
     Video framerate
     """
+
     def calculate(self, processed_video_sequence):
         fps = processed_video_sequence._ffprobe_result["avg_frame_rate"]
         if fps != "unknown":
@@ -64,6 +67,7 @@ class Resolution:
     """
     Resolution in pixels (width * height)
     """
+
     def calculate(self, processed_video_sequence):
         height = processed_video_sequence._ffprobe_result["height"]
         width = processed_video_sequence._ffprobe_result["width"]
@@ -74,6 +78,7 @@ class Codec:
     """
     Video codec used, either h264, hevc, vp9.
     """
+
     def calculate(self, processed_video_sequence):
         codec = processed_video_sequence._ffprobe_result["codec"]
         return codec
@@ -83,6 +88,7 @@ class Duration:
     """
     Video duration in seconds.
     """
+
     def calculate(self, processed_video_sequence):
         duration = processed_video_sequence._ffprobe_result["duration"]
         return float(duration)
@@ -91,9 +97,10 @@ class Duration:
 class BitDepth:
     """ Extracts bitdepth for a given video
     """
+
     def calculate(self, processed_video_sequence):
         # TODO: maybe simpler possible?
-        bitdepth = 8 # fallback
+        bitdepth = 8  # fallback
         for frame in processed_video_sequence.get_frames_from_bitstream_stats():
             bitdepth = frame["Seq"]["BitDepth"]
             break
@@ -104,6 +111,7 @@ class FramesizeStatsPerGop:
     """
     Calculate Framesize statistics per GOP
     """
+
     def calculate(self, processed_video_sequence):
         needed = ["FrameSize"]
         return stats_per_gop(processed_video_sequence, needed)
@@ -113,6 +121,7 @@ class QPValuesStatsPerGop:
     """
     Calculate several features based on QPValues per GOP
     """
+
     def calculate(self, processed_video_sequence):
         needed = ["Av_QP", "Av_QPBB", "max_QP", "min_QP"]
         return stats_per_gop(processed_video_sequence, needed)
@@ -122,8 +131,18 @@ class AvMotionStatsPerGop:
     """
     Calculate motion statistics per GOP
     """
+
     def calculate(self, processed_video_sequence):
-        needed = ['Av_Motion', 'Av_MotionDif', 'Av_MotionX', 'Av_MotionY', 'StdDev_Motion', 'StdDev_MotionDif', 'StdDev_MotionX', 'StdDev_MotionY']
+        needed = [
+            "Av_Motion",
+            "Av_MotionDif",
+            "Av_MotionX",
+            "Av_MotionY",
+            "StdDev_Motion",
+            "StdDev_MotionDif",
+            "StdDev_MotionX",
+            "StdDev_MotionY",
+        ]
         return stats_per_gop(processed_video_sequence, needed)
 
 
@@ -131,6 +150,7 @@ class QPstatspersecond:
     """
         Calculate qp values per video second
     """
+
     def calculate(self, processed_video_sequence):
         logging.debug("calculate QPstatspersecond based for {}".format(processed_video_sequence))
         results = []
@@ -139,9 +159,9 @@ class QPstatspersecond:
         qp_list_non_i = []
         fr_type_list = []
 
-        framerate =  Framerate().calculate(processed_video_sequence)
+        framerate = Framerate().calculate(processed_video_sequence)
 
-        #print(framerate)
+        # print(framerate)
 
         for frame in processed_video_sequence.get_frames_from_bitstream_stats():
             f = frame["Av_QPBB"]
@@ -155,22 +175,20 @@ class QPstatspersecond:
             if fr_type != 1:
                 qp_list_non_i.append(f)
 
-        frames_per_sec = np.arange(0, len(qp_list)+1, framerate)
+        frames_per_sec = np.arange(0, len(qp_list) + 1, framerate)
         frames_per_sec = list(frames_per_sec)
-
 
         for i in range(0, len(frames_per_sec) - 1):
             start = np.int(frames_per_sec[i])
-            end = np.int(frames_per_sec[i+1])
+            end = np.int(frames_per_sec[i + 1])
             qp_per_sec = qp_list[start:end]
             fr_type_per_frame = fr_type_list[start:end]
             qp_per_sec_non_i = qp_per_sec.copy()
 
-            if (1 in fr_type_per_frame):
+            if 1 in fr_type_per_frame:
                 i_frame_indices = fr_type_per_frame.index(1)
             else:
                 i_frame_indices = -1
-
 
             if i_frame_indices >= 0:
                 # print("There is an i frame in this second")
