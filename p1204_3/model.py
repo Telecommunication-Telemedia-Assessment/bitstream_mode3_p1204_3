@@ -60,11 +60,11 @@ class P1204BitstreamMode3:
 
         prediction_features["video_codec"] = prediction_features.apply(video_codec_extension, axis=1)
 
-        def norm_qp(r):
+        def norm_qp(row):
             qp_norm_coeffs = {"h264": 51, "h264_10bit": 63, "hevc": 51, "hevc_10bit": 63, "vp9": 255}
-            if not r["video_codec"] in qp_norm_coeffs:
+            if not row["video_codec"] in qp_norm_coeffs:
                 return -1
-            return r["QPValuesStatsPerGop_mean_Av_QPBB_non-i"] / qp_norm_coeffs[r["video_codec"]]
+            return row["QPValuesStatsPerGop_mean_Av_QPBB_non-i"] / qp_norm_coeffs[row["video_codec"]]
 
         prediction_features["quant"] = prediction_features[
             ["video_codec", "QPValuesStatsPerGop_mean_Av_QPBB_non-i"]
@@ -99,7 +99,7 @@ class P1204BitstreamMode3:
         initial_predicted_score = np.vectorize(map_to_5)(pred)
         prediction_features["predicted_mos_mode3_baseline"] = initial_predicted_score
 
-        # now the RF model is loaded and features are prepared
+        # now the RF model will be loaded and features are prepared
         residual_rf_model = load_serialized(rf_model)
 
         prediction_features_rf = prediction_features.copy()
