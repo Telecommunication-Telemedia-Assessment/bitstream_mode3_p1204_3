@@ -36,7 +36,7 @@ def main(_=[]):
     # argument parsing
     parser = argparse.ArgumentParser(
         description="ITU-T P.1204.3 video quality model reference implementation",
-        epilog="stg7, rrao 2019",
+        epilog="stg7, rrao 2020",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument("video", type=str, nargs="+", help="input video to estimate quality")
