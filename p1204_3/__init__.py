@@ -12,9 +12,6 @@ from p1204_3.model import P1204BitstreamMode3
 from p1204_3.generic import *
 
 
-__version__ = "0.1.0"
-
-
 def predict_quality(
     videofilename,
     model_config_filename,

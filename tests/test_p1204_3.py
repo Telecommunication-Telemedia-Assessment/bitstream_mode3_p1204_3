@@ -1,11 +1,6 @@
 import os
-from p1204_3 import __version__
 from p1204_3 import predict_quality
 from p1204_3.utils import json_load
-
-
-def test_version():
-    assert __version__ == "0.1.0"
 
 
 def test_model_prediction_h264():
