@@ -52,6 +52,8 @@ def check_or_install_videoparser():
         # perform update for "main part", TODO: think about a better handling, in case we change c++ parts of the parser, maybe as a separate python module?
         os.system(f"cd {videoparser_directory} && git pull origin master")
         return
+
+    logging.info("clone and build video parser, this will take some time")
     os.system(f"git clone {VIDEOPARSER_REPO} {videoparser_directory}")
     os.system(os.path.join(videoparser_directory, "build.sh"))
 
