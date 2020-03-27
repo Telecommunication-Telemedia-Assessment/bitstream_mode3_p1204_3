@@ -10,6 +10,7 @@ import itertools
 from p1204_3.utils import *
 from p1204_3.model import P1204BitstreamMode3
 from p1204_3.generic import *
+from p1204_3.videoparser import check_or_install_videoparser
 
 
 def predict_quality(
@@ -75,6 +76,9 @@ def main(_=[]):
     logging.basicConfig(level=logging.DEBUG)
 
     assert_file(a["model"], "model folder is not valid")
+
+    check_or_install_videoparser()
+
     logging.info(f"handle the following videos (# {len(a['video'])}): \n  " + "\n  ".join(a["video"]))
     params = [
         (

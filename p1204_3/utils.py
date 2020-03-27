@@ -7,7 +7,7 @@ import subprocess
 import json
 import bz2
 import gzip
-
+import shlex
 
 color_codes = {
     "black": "\033[1;30m",
@@ -33,16 +33,28 @@ logging.addLevelName(logging.INFO, color_codes["green"] + logging.getLevelName(l
 logging.addLevelName(logging.DEBUG, color_codes["blue"] + logging.getLevelName(logging.DEBUG) + color_codes["end_code"])
 
 
-def shell_call(call):
+def run_cmd(cmd, dry_run=False, verbose=False):
     """
-    Run a program via system call and return stdout + stderr.
-    @param call programm and command line parameter list, e.g shell_call("ls /")
-    @return stdout and stderr of programm call
+    Run a shell command passed as an array.
+    Both stdout and stderr are returned.
+
+    Will take care of proper quoting.
+
+    If dry_run is passed, do not actually run the command.
+    If verbose is passed, print the command before running it.
     """
+    if dry_run or verbose:
+        print(" ".join([shlex.quote(c) for c in cmd]))
+        if dry_run:
+            return
+
     try:
-        output = subprocess.check_output(call, universal_newlines=True, shell=True)
-    except Exception as e:
-        output = str(e.output)
+        output = subprocess.check_output(cmd, stderr=subprocess.STDOUT).decode("utf-8")
+    except subprocess.CalledProcessError as e:
+        raise Exception(f"Nonzero return status running command {cmd}:\n{e.output.decode('utf-8')}")
+    except subprocess.SubprocessError as e:
+        raise Exception(f"General error running command {cmd}:\n{e.output.decode('utf-8')}")
+
     return output
 
 
@@ -75,11 +87,17 @@ def ffprobe(filename):
     if not os.path.isfile(filename):
         raise Exception("{} is not a valid file".format(filename))
 
-    cmd = "ffprobe -show_format -select_streams v:0 -show_streams -of json '{filename}' 2>/dev/null".format(
-        filename=filename
-    )
+    cmd = [
+        "ffprobe",
+        "-loglevel", "error",
+        "-show_format",
+        "-select_streams", "v:0",
+        "-show_streams",
+        "-of", "json",
+        filename
+    ]
 
-    res = shell_call(cmd).strip()
+    res = run_cmd(cmd).strip()
 
     if len(res) == 0:
         raise Exception("{} is somehow not valid, so ffprobe could not extract anything".format(filename))
