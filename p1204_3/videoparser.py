@@ -4,7 +4,6 @@ import sys
 import logging
 
 from p1204_3.generic import VIDEOPARSER_REPO
-from p1204_3.utils import file_open
 
 
 def __video_parser_dir():
