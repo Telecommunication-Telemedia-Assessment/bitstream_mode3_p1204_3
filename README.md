@@ -115,12 +115,12 @@ NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS 
 ## Authors
 
 Main developers:
-* Steve Göring; Technische Universität Ilmenau
-* Rakesh Rao Ramachandra Rao; Technische Universität Ilmenau
+* Steve Göring - Technische Universität Ilmenau
+* Rakesh Rao Ramachandra Rao - Technische Universität Ilmenau
 
 Contributors:
-* Alexander Raake; Technische Universität Ilmenau
-* Bernhard Feiten; Deutsche Telekom AG
-* Peter List; Deutsche Telekom AG
-* Ulf Wüstenhagen; Deutsche Telekom AG
-* Werner Robitza; Technische Universität Ilmenau
+* Alexander Raake - Technische Universität Ilmenau
+* Bernhard Feiten - Deutsche Telekom AG
+* Peter List - Deutsche Telekom AG
+* Ulf Wüstenhagen - Deutsche Telekom AG
+* Werner Robitza - Technische Universität Ilmenau
