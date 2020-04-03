@@ -50,7 +50,17 @@ def check_or_install_videoparser():
     if os.path.isdir(videoparser_directory):
         logging.info("video parser is checked out")
         # perform update for "main part", TODO: think about a better handling, in case we change c++ parts of the parser, maybe as a separate python module?
-        os.system(f"cd {videoparser_directory} && git pull origin master")
+        #os.system(f"cd {videoparser_directory} && git pull origin master")
+        if os.path.isfile(
+            os.path.join(
+                videoparser_directory,
+                "VideoParser",
+                "libvideoparser.so"
+                )
+            ):
+            logging.info("video parser is build")
+            return
+        logging.error("video parser is not build correctly, please check")
         return
 
     logging.info("clone and build video parser, this will take some time")
