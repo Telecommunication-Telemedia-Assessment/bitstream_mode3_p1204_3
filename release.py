@@ -45,5 +45,5 @@ with open(init_py) as xfp:
 with open(init_py, "w") as xfp:
     xfp.write("".join(content))
 
-os.system(f"""git comit -m"move to next version: {next_version}" """)
+os.system(f"""git commit -m"move to next version: {next_version}" . """)
 os.system("git remote | xargs -i git push {} ")
