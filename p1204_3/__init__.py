@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-__version__ = "0.1.1" #
-import argparse
-import sys
-import os
-import json
+__version__ = "0.1.1" #import json
 import multiprocessing
 import logging
 import itertools
