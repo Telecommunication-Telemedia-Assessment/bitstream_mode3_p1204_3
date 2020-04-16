@@ -20,6 +20,8 @@ sklearn-json = "^0.1.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^4.6"
+gitchangelog = "^3.0.4"
+pystache = "^0.5.4"
 
 [tool.poetry.scripts]
 p1204_3 = "p1204_3:main"
