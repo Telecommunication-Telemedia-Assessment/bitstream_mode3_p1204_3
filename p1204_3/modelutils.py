@@ -866,6 +866,9 @@ def load_serialized(filename_with_path):
         feature_selection = json_load(feature_selection_filename)
 
     regressor = skljson.from_json(filename_with_path)
+    # override n_jobs to prevent warning, model should be fast enough
+    # n_jobs helps during training
+    regressor.n_jobs = 1
 
     class Model:
         """ wrapper to the serialized scikit learn model,
