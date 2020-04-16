@@ -13,7 +13,7 @@ def run_cmd(cmd, dry_run=False):
         print(" ".join([shlex.quote(c) for c in cmd]))
         return ""
     else:
-        return subprocess.check_output(cmd)
+        return subprocess.check_output(cmd).decode("utf-8")
 
 
 def main():
@@ -86,8 +86,9 @@ def main():
     run_cmd(["git", "tag", f"v{next_version}"], cli_args.dry_run)
 
     changelog = run_cmd(["poetry", "run", "gitchangelog"], cli_args.dry_run)
-    with open("CHANGELOG.md", "w") as ch:
-        ch.write(changelog.decode("utf-8"))
+    if not cli_args.dry_run:
+        with open("CHANGELOG.md", "w") as ch:
+            ch.write(changelog)
 
     run_cmd(["git", "commit", "--amend", "--no-edit"], cli_args.dry_run)
     # repeat tag for changelog (forced)
