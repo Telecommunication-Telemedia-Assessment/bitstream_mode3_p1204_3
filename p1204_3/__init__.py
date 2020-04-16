@@ -71,9 +71,26 @@ def main(_=[]):
         default="./tmp",
         help="temporary folder to store bitstream stats and other intermediate results",
     )
+    parser.add_argument(
+        "-d", "--debug",
+        action="store_true",
+        help="show debug output",
+    )
+    parser.add_argument(
+        "-q", "--quiet",
+        action="store_true",
+        help="not not print any output except errors",
+    )
 
     a = vars(parser.parse_args())
-    logging.basicConfig(level=logging.DEBUG)
+
+    if a["debug"]:
+        logging.basicConfig(level=logging.DEBUG)
+        logging.debug("debug output enabled")
+    elif a["quiet"]:
+        logging.basicConfig(level=logging.ERROR)
+    else:
+        logging.basicConfig(level=logging.INFO)
 
     assert_file(a["model"], "model folder is not valid")
     logging.info(f"handle the following videos (# {len(a['video'])}): \n  " + "\n  ".join(a["video"]))
