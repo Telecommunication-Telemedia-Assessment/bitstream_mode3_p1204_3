@@ -79,7 +79,7 @@ def main(_=[]):
     parser.add_argument(
         "-q", "--quiet",
         action="store_true",
-        help="not not print any output except errors",
+        help="not print any output except errors",
     )
 
     a = vars(parser.parse_args())
