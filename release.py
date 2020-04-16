@@ -95,8 +95,10 @@ def main():
     run_cmd(["git", "tag", "-f", f"v{next_version}"], cli_args.dry_run)
 
     if not cli_args.no_push:
-        run_cmd(["git", "push"], cli_args.dry_run)
-        run_cmd(["git", "push", "--tags"], cli_args.dry_run)
+        remotes = run_cmd(["git", "remote"]).rstrip()
+        for remote in remotes.split("\n"):
+            run_cmd(["git", "push", remote], cli_args.dry_run)
+            run_cmd(["git", "push", remote, "--tags"], cli_args.dry_run)
 
 
 if __name__ == "__main__":
