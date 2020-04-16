@@ -13,7 +13,10 @@ def run_cmd(cmd, dry_run=False):
         print(" ".join([shlex.quote(c) for c in cmd]))
         return ""
     else:
-        return subprocess.check_output(cmd).decode("utf-8")
+        try:
+            return subprocess.check_output(cmd).decode("utf-8")
+        except subprocess.CalledProcessError as e:
+            print(e)
 
 
 def main():
