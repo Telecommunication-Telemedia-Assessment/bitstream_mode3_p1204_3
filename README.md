@@ -88,7 +88,7 @@ optional arguments:
                         display diagonal size in inches (default: 55)
   --tmp TMP             temporary folder to store bitstream stats and other intermediate results (default: ./tmp)
   -d, --debug           show debug output (default: False)
-  -q, --quiet           not not print any output except errors (default: False)
+  -q, --quiet           not print any output except errors (default: False)
 
 stg7, rrao 2020
 
