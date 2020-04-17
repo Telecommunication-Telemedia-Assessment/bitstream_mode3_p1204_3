@@ -2,6 +2,55 @@ Changelog
 =========
 
 
+v0.1.2 (2020-04-17)
+-------------------
+- Fix release script. [Werner Robitza]
+- Update README.md. [Steve Göring]
+- Update testcases to final model version. [Steve]
+- Prevent prettifier for touching lookup tables. [Steve]
+- Added missing import. [Steve]
+- Cleanup temporary versioning changes that were not required. [Steve]
+- Add error output to shellcall. [Steve]
+- Merge branch 'master' of github.com:Telecommunication-Telemedia-
+  Assessment/bitstream_mode3_p1204_3. [Steve]
+- Merge pull request #7 from Telecommunication-Telemedia-Assessment/fix-
+  release-2. [Steve Göring]
+
+  Fix release script
+- Merge pull request #7 from Telecommunication-Telemedia-Assessment/fix-
+  release-2. [Steve Göring]
+
+  Fix release script
+- Push to all remotes. [Werner Robitza]
+- Fix error with writing changelog. [Werner Robitza]
+- Merge pull request #3 from Telecommunication-Telemedia-Assessment/fix-
+  release. [Steve Göring]
+
+  improve release script
+- Improve release script. [Werner Robitza]
+
+  - add a way to specify patch/minor/major
+  - do not double push current version and next version; only push current version
+  - add a way to dry-run before doing anything
+  - add a way to prevent pushing
+  - use subprocess instead of os.system
+  - create a CHANGELOG automatically
+- Typo fix. [Steve]
+- Changed to prevent scikit learn warning #4 closed. [Steve]
+- Merge pull request #5 from Telecommunication-Telemedia-
+  Assessment/logging. [Steve Göring]
+
+  add possibility to set different log levels
+- Add possibility to set different log levels. [Werner Robitza]
+
+  - add debug option to toggle debug logs
+  - add quiet option to only show errors (enables parsing JSON output from stdout)
+- Add devekopment version of the model. [Steve]
+- Go to next version; cleanup some project settings. [Steve]
+- Fix release script. [Steve]
+- Update model coefficients to the ones used in the standard. [Steve]
+
+
 v0.1.0 (2020-04-14)
 -------------------
 - Change videoparser update handling. [Steve]

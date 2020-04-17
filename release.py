@@ -30,6 +30,12 @@ def main():
     )
     cli_args = parser.parse_args()
 
+    run_cmd(["git", "fetch", "--all"], cli_args.dry_run)
+    status = run_cmd(["git", "status", "-sb"], cli_args.dry_run)
+    if "behind" in status:
+        print("Your local branch is behind the remote. Please run `git pull --rebase` first.")
+        sys.exit(1)
+
     with open("pyproject.toml") as xfp:
         cfg = toml.load(xfp)
 
@@ -92,6 +98,7 @@ def main():
     if not cli_args.dry_run:
         with open("CHANGELOG.md", "w") as ch:
             ch.write(changelog)
+    run_cmd(["git", "add", "CHANGELOG.md"], cli_args.dry_run)
 
     run_cmd(["git", "commit", "--amend", "--no-edit"], cli_args.dry_run)
     # repeat tag for changelog (forced)
