@@ -91,7 +91,7 @@ def main():
     print("committing and pushing to remote")
 
     message = f"move to next version: {next_version}"
-    run_cmd(["git", "commit", "-m", message], cli_args.dry_run)
+    run_cmd(["git", "commit", "-a", "-m", message], cli_args.dry_run)
     run_cmd(["git", "tag", f"v{next_version}"], cli_args.dry_run)
 
     changelog = run_cmd(["poetry", "run", "gitchangelog"], cli_args.dry_run)
