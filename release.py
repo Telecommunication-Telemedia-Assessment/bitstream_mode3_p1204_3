@@ -82,7 +82,7 @@ def main():
         with open(init_py) as xfp:
             for x in xfp.readlines():
                 if "__version__ = " in x:
-                    x = f"""__version__ = "{next_version}" #"""
+                    x = f"""__version__ = "{next_version}" #\n """
                 content.append(x)
 
         with open(init_py, "w") as xfp:
