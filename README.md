@@ -59,6 +59,54 @@ To use the provided tool, e.g. run
 poetry run p1204_3 test_videos/test_video_h264.mkv
 ```
 
+The output will include log message printed on stderr and output scores printed on stdout.
+
+The resulting video quality metrics will be printed in a JSON-formatted array, where each entry corresponds to one input file. For example, to only get the metrics printed in JSON format, run:
+
+```bash
+poetry run p1204_3 test_videos/test_video_h264.mkv -q
+```
+
+The output will look as follows:
+
+```
+[
+    {
+        "date": "2020-08-28 10:37:48.721183",
+        "debug": {
+            "baseline": 4.16292374098929,
+            "coding_deg": 32.43006645212775,
+            "rf_pred": 4.010545689643026,
+            "temporal_deg": 0.0,
+            "upscaling_deg": 0.0
+        },
+        "per_second": [
+            4.132547886568417,
+            3.931621503558015,
+            4.328687969986304,
+            4.3002566462931,
+            4.1819097998511054,
+            3.9471693619756834,
+            3.935126424508243,
+            3.9407565516571026,
+            3.955412313745017,
+            3.991729591232866
+        ],
+        "per_sequence": 4.086734715316158,
+        "video_basename": "test_video_h264.mkv",
+        "video_full_path": "test_videos/test_video_h264.mkv"
+    }
+]
+```
+
+Here, the most relevant output is the `per_sequence` value, which gives the quality of the video sequence on a mean opinion score (MOS) scale between 1 and 5, where 1 corresponds to bad and 5 corresponds to excellent.
+
+The `per_second` values are MOS values per each second of input.
+
+The `debug` values are provided for internal testing and diagnostics.
+
+### Detailed Options
+
 Otherwise check the included help, `poetry run p1204_3 --help`:
 ```
 usage: p1204_3 [-h] [--result_folder RESULT_FOLDER] [--model MODEL] [--cpu_count CPU_COUNT] [--device_type {pc,tv,tablet,mobile}]
