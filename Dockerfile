@@ -25,4 +25,4 @@ RUN git clone https://github.com/Telecommunication-Telemedia-Assessment/bitstrea
 RUN ./build.sh
 
 WORKDIR "/p1204_3"
-#ENTRYPOINT ["poetry","run","p1204_3"]
+ENTRYPOINT ["poetry","run","p1204_3"]
