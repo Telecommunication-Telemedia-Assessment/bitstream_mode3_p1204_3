@@ -17,11 +17,11 @@ RUN apt-get update && apt-get install -y \
 RUN pip3 install poetry pandas
 
 WORKDIR "/p1204_3"
-RUN git clone https://github.com/aachenmax/bitstream_mode3_p1204_3.git /p1204_3
+RUN git clone --depth 1 https://github.com/Telecommunication-Telemedia-Assessment/bitstream_mode3_p1204_3.git /p1204_3
 RUN poetry install
 
 WORKDIR "/p1204_3/p1204_3/bitstream_mode3_videoparser"
-RUN git clone https://github.com/Telecommunication-Telemedia-Assessment/bitstream_mode3_videoparser /p1204_3/p1204_3/bitstream_mode3_videoparser
+RUN git clone --depth 1 https://github.com/Telecommunication-Telemedia-Assessment/bitstream_mode3_videoparser /p1204_3/p1204_3/bitstream_mode3_videoparser
 RUN ./build.sh
 
 WORKDIR "/p1204_3"
