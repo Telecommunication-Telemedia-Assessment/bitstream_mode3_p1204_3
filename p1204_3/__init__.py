@@ -74,14 +74,14 @@ def main(_=[]):
     parser.add_argument(
         "--viewing_distance",
         choices=VIEWING_DISTANCES,
-        default="1.5xH",
+        default=DEFAULT_VIEWING_DISTANCE,
         help="viewing distance relative to the display height (not used for model prediction)",
     )
     parser.add_argument(
         "--display_size",
         choices=DISPLAY_SIZES,
         type=float,
-        default=55,
+        default=DEFAULT_DISPLAY_SIZE,
         help="display diagonal size in inches (not used for model prediction)",
     )
     parser.add_argument(
@@ -118,6 +118,19 @@ def main(_=[]):
         f"handle the following videos (# {len(a['video'])}): \n  "
         + "\n  ".join(a["video"])
     )
+
+    if a["viewing_distance"] != DEFAULT_VIEWING_DISTANCE:
+        logging.warn(
+            "Changing the viewing distance is not supported in the official ITU-T Rec. P.1204.3 model "
+            "and has no effect. The option is only there for possible future implemetations."
+        )
+
+    if a["display_size"] != DEFAULT_DISPLAY_SIZE:
+        logging.warn(
+            "Changing the display size is not supported in the official ITU-T Rec. P.1204.3 model "
+            "and has no effect. The option is only there for possible future implemetations."
+        )
+
     params = [
         (
             video,
