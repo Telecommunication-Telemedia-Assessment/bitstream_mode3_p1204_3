@@ -132,9 +132,9 @@ optional arguments:
   --device_resolution {3840x2160,2560x1440}
                         resolution of the output device (width x height) (default: 3840x2160)
   --viewing_distance {1.5xH,4xH,6xH}
-                        viewing distance relative to the display height (default: 1.5xH)
+                        viewing distance relative to the display height (not used for model prediction) (default: 1.5xH)
   --display_size {10,32,37,5.1,5.5,5.8,55,65,75}
-                        display diagonal size in inches (default: 55)
+                        display diagonal size in inches (not used for model prediction) (default: 55)
   --tmp TMP             temporary folder to store bitstream stats and other intermediate results (default: ./tmp)
   -d, --debug           show debug output (default: False)
   -q, --quiet           not print any output except errors (default: False)
