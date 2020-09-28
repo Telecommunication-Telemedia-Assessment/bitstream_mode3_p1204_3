@@ -146,8 +146,8 @@ stg7, rrao 2020
 Most parameter default settings are for the PC/TV use case, change to different use cases based on the scope of the recommendation.
 *Important:* in contrast to the official ITU-T P.1204.3 description we provided here the random forest part as a serialized output of scikit-learn, a generated python script including the estimated trees can be found on the [ITU-T P.1204.3 page](https://www.itu.int/rec/T-REC-P.1204.3/en).
 
-The parameters `viewing_distance` and `display_size` are not used for the prediction (changes will not have an effect), however they are formally as input parameters for P.1204.3 specified.
-Furthermore, `device_type` and `device_resolution` are depended to each other, the model is not trained, e.g. on a TV/PC with `2560x1440` as resolution (this resolution is only for tablet and mobile suitable).
+The parameters `viewing_distance` and `display_size` are not used for the prediction (changes will not have an effect), however they are formally specified as input parameters for P.1204.3.
+Furthermore, `device_type` and `device_resolution` are dependent on each other. The model is not trained on combinations not part of the standard, e.g. testing TV/PC with `2560x1440` as resolution is not valid, as this resolution is only suitable for tablet and mobile.
 
 
 ## License
