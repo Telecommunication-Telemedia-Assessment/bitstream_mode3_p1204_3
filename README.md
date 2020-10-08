@@ -123,8 +123,7 @@ optional arguments:
   -h, --help            show this help message and exit
   --result_folder RESULT_FOLDER
                         folder to store video quality results (default: reports)
-  --model MODEL         model config file to be used for prediction (default: /home/werner/Documents/Projects/itu/pnats2avhd-
-                        avt/bitstream_mode3_p1204_3/p1204_3/models/p1204_3/config.json)
+  --model MODEL         model config file to be used for prediction (default: ./p1204_3/models/p1204_3/config.json)
   --cpu_count CPU_COUNT
                         thread/cpu count (default: 8)
   --device_type {pc,tv,tablet,mobile}
