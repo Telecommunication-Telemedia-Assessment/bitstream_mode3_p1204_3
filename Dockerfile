@@ -1,5 +1,7 @@
 FROM ubuntu:18.04
 
+ENV LANG C.UTF-8
+
 RUN apt-get -qq update && apt-get install -qq -y \
 	python3.8 python3-pip git \
 	python3-venv python3-numpy \
