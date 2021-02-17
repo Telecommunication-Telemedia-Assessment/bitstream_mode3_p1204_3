@@ -193,6 +193,7 @@ class P1204BitstreamMode3:
         viewing_distance="1.5xH",
         display_size=55,
         temporary_folder="tmp",
+        cache_features=True
     ):
 
         assert_file(videofilename, f"{videofilename} does not exist, please check")
@@ -245,8 +246,7 @@ class P1204BitstreamMode3:
         feature_cache = os.path.join(
             temporary_folder, os.path.splitext(os.path.basename(videofilename))[0] + "_feat.pkl"
         )
-        logging.info(f"use feature cache file {feature_cache}")
-        if not os.path.isfile(feature_cache):
+        if not os.path.isfile(feature_cache) or not cache_features:
             # run bitstream parser
             bitstream_parser_result_file = run_videoparser(videofilename, temporary_folder)
             if bitstream_parser_result_file == "":
@@ -257,7 +257,9 @@ class P1204BitstreamMode3:
             features = pd.DataFrame(
                 [extract_features(videofilename, self.features_used(), ffprobe_result, bitstream_parser_result_file)]
             )
-            features.to_pickle(feature_cache)
+            if cache_features:
+                logging.info(f"use feature cache file {feature_cache}")
+                features.to_pickle(feature_cache)
         else:
             logging.info("features are already cached, extraction skipped")
             features = pd.read_pickle(feature_cache)

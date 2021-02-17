@@ -19,6 +19,7 @@ def predict_quality(
     viewing_distance="1.5xH",
     display_size=55,
     temporary_folder="tmp",
+    cache_features=True
 ):
     return P1204BitstreamMode3().predict_quality(
         videofilename,
@@ -28,6 +29,7 @@ def predict_quality(
         viewing_distance,
         display_size,
         temporary_folder,
+        cache_features
     )
 
 
@@ -97,6 +99,11 @@ def main(_=[]):
         help="show debug output",
     )
     parser.add_argument(
+        "-nocached_features",
+        action="store_true",
+        help="no caching of features",
+    )
+    parser.add_argument(
         "-q",
         "--quiet",
         action="store_true",
@@ -127,6 +134,7 @@ def main(_=[]):
             a["viewing_distance"],
             a["display_size"],
             a["tmp"],
+            not a["nocached_features"]
         )
         for video in a["video"]
     ]
