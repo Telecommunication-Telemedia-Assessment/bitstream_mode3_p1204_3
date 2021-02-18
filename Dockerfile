@@ -17,15 +17,15 @@ RUN apt-get -qq update && apt-get install -qq -y \
 	wget zlib1g-dev yasm && \
 	rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install --no-cache-dir poetry pandas
+RUN pip3 install --no-cache-dir pandas
 
 WORKDIR "/p1204_3"
 RUN git clone --depth 1 https://github.com/Telecommunication-Telemedia-Assessment/bitstream_mode3_p1204_3.git /p1204_3
-RUN poetry install
+RUN pip3 install -r requirements.txt
 
 WORKDIR "/p1204_3/p1204_3/bitstream_mode3_videoparser"
 RUN git clone --depth 1 https://github.com/Telecommunication-Telemedia-Assessment/bitstream_mode3_videoparser /p1204_3/p1204_3/bitstream_mode3_videoparser
 RUN ./build.sh
 
 WORKDIR "/p1204_3"
-ENTRYPOINT ["poetry","run","p1204_3"]
+ENTRYPOINT ["python3","-m","p1204_3"]
