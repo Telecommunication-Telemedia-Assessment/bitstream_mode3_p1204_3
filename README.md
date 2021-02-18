@@ -110,8 +110,8 @@ The `debug` values are provided for internal testing and diagnostics.
 Otherwise check the included help, `poetry run p1204_3 --help`:
 ```
 usage: p1204_3 [-h] [--result_folder RESULT_FOLDER] [--model MODEL] [--cpu_count CPU_COUNT] [--device_type {pc,tv,tablet,mobile}]
-               [--device_resolution {3840x2160,2560x1440}] [--viewing_distance {1.5xH,4xH,6xH}] [--display_size {10,32,37,5.1,5.5,5.8,55,65,75}] [--tmp TMP] [-d]
-               [-q]
+               [--device_resolution {3840x2160,2560x1440}] [--viewing_distance {1.5xH,4xH,6xH}] [--display_size {10,32,37,5.1,5.5,5.8,55,65,75}] [--tmp TMP]
+               [-d] [-nocached_features] [-q]
                video [video ...]
 
 ITU-T P.1204.3 video quality model reference implementation
@@ -123,7 +123,8 @@ optional arguments:
   -h, --help            show this help message and exit
   --result_folder RESULT_FOLDER
                         folder to store video quality results (default: reports)
-  --model MODEL         model config file to be used for prediction (default: ./p1204_3/models/p1204_3/config.json)
+  --model MODEL         model config file to be used for prediction (default:
+                        ./p1204_3/models/p1204_3/config.json)
   --cpu_count CPU_COUNT
                         thread/cpu count (default: 8)
   --device_type {pc,tv,tablet,mobile}
@@ -136,9 +137,11 @@ optional arguments:
                         display diagonal size in inches (not used for model prediction) (default: 55)
   --tmp TMP             temporary folder to store bitstream stats and other intermediate results (default: ./tmp)
   -d, --debug           show debug output (default: False)
+  -nocached_features    no caching of features (default: False)
   -q, --quiet           not print any output except errors (default: False)
 
 stg7, rrao 2020
+
 
 ```
 
