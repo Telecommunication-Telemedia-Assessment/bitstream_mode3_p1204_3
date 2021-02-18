@@ -153,7 +153,7 @@ def per_sample_interval_function(mos_O27, prediction_features, intervall=1):
             mean_qp_per_sec = float(prediction_features["QPstatspersecond_mean_qpbb_non_i_" + str(i) + "_sec"])
         else:
             mean_qp_per_sec = mean_qp_non_i
-        if mean_qp_per_sec != 0:
+        if mean_qp_per_sec != 0 and not(np.isnan(mean_qp_per_sec)):
             mos_per_sec = (mean_qp_non_i / mean_qp_per_sec) * mos_O27
         else:
             mos_per_sec = mos_O27
