@@ -13,7 +13,7 @@ from p1204_3.generic import *
 
 def predict_quality(
     videofilename,
-    model_config_filename,
+    model_config_filename=DEFAULT_MODEL,
     device_type="pc",
     device_resolution="3840x2160",
     viewing_distance="1.5xH",
@@ -52,7 +52,7 @@ def main(_=[]):
     parser.add_argument(
         "--model",
         type=str,
-        default=os.path.join(os.path.dirname(__file__), "models/p1204_3/config.json"),
+        default=DEFAULT_MODEL,
         help="model config file to be used for prediction",
     )
     parser.add_argument(

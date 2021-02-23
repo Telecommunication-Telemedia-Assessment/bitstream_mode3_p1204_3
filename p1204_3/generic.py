@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 
 DEVICE_TYPES = ["pc", "tv", "tablet", "mobile"]
 DEVICE_RESOLUTIONS = ["3840x2160", "2560x1440"]
@@ -13,3 +14,6 @@ CODECS_SUPPORTED = ["h264", "hevc", "vp9"]
 
 # videoparser git repository
 VIDEOPARSER_REPO = "https://github.com/Telecommunication-Telemedia-Assessment/bitstream_mode3_videoparser.git"
+
+# default model
+DEFAULT_MODEL = os.path.join(os.path.dirname(__file__), "models/p1204_3/config.json")
