@@ -21,16 +21,23 @@ def predict_quality(
     temporary_folder="tmp",
     cache_features=True
 ):
-    return P1204BitstreamMode3().predict_quality(
-        videofilename,
-        model_config_filename,
-        device_type,
-        device_resolution,
-        viewing_distance,
-        display_size,
-        temporary_folder,
-        cache_features
-    )
+    try:
+        return P1204BitstreamMode3().predict_quality(
+            videofilename,
+            model_config_filename,
+            device_type,
+            device_resolution,
+            viewing_distance,
+            display_size,
+            temporary_folder,
+            cache_features
+        )
+    except Exception as e:
+        logging.error(
+            f"there was a problem while processing {videofilename}  "
+            + "\n" + "error:" + str(e)
+        )
+        return {}
 
 
 def main(_=[]):
