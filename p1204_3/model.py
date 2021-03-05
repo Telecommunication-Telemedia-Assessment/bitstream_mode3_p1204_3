@@ -162,16 +162,18 @@ class P1204BitstreamMode3:
         final_pred = (
             w * prediction_features_rf["predicted_mos_mode3_baseline"] + (1 - w) * prediction_features_rf["rf_pred"]
         )
+        feature_values = {col: prediction_features_rf[col] for col in feature_columns}
         result = {
             "final_pred": final_pred,
-            "baseline": prediction_features_rf["predicted_mos_mode3_baseline"],
-            "coding_deg": cod_deg,
-            "upscaling_deg": resolution,
-            "temporal_deg": framerate,
-            "rf_pred": prediction_features_rf["rf_pred"],
+            "debug": {
+                "baseline": prediction_features_rf["predicted_mos_mode3_baseline"],
+                "coding_deg": cod_deg,
+                "upscaling_deg": resolution,
+                "temporal_deg": framerate,
+                "rf_pred": prediction_features_rf["rf_pred"],
+            },
+            "features": feature_values
         }
-        for col in feature_columns:
-            result[col] = prediction_features_rf[col]
         return result
 
     def features_used(self):
@@ -272,15 +274,22 @@ class P1204BitstreamMode3:
         per_sequence = self._calculate(features, model_coefficients, rf_model, display_res, device_type)
 
         per_second = per_sample_interval_function(per_sequence["final_pred"], features)
+        print(per_sequence.keys())
         debug = {
-            col: float(per_sequence[col].values[0])
-            for col in filter(lambda x: x != "final_pred", per_sequence)
+            col: float(per_sequence["debug"][col].values[0])
+            for col in per_sequence["debug"]
         }
+        feature_values = {
+            col: float(per_sequence["features"][col].values[0])
+            for col in per_sequence["features"]
+        }
+
         return {
             "video_full_path": videofilename,
             "video_basename": os.path.basename(videofilename),
             "per_second": [float(x) for x in per_second],
             "per_sequence": float(per_sequence["final_pred"].values[0]),
             "debug": debug,
+            "features": feature_values,
             "date": str(datetime.datetime.now()),
         }
