@@ -4,6 +4,7 @@ import json
 import os
 import datetime
 
+import p1204_3
 from p1204_3.utils import assert_file
 from p1204_3.utils import assert_msg
 from p1204_3.utils import ffprobe
@@ -292,4 +293,5 @@ class P1204BitstreamMode3:
             "debug": debug,
             "features": feature_values,
             "date": str(datetime.datetime.now()),
+            "version": p1204_3.__version__
         }
