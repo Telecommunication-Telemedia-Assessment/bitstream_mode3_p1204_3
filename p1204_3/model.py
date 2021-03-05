@@ -162,7 +162,7 @@ class P1204BitstreamMode3:
         final_pred = (
             w * prediction_features_rf["predicted_mos_mode3_baseline"] + (1 - w) * prediction_features_rf["rf_pred"]
         )
-        return {
+        result = {
             "final_pred": final_pred,
             "baseline": prediction_features_rf["predicted_mos_mode3_baseline"],
             "coding_deg": cod_deg,
@@ -170,6 +170,9 @@ class P1204BitstreamMode3:
             "temporal_deg": framerate,
             "rf_pred": prediction_features_rf["rf_pred"],
         }
+        for col in feature_columns:
+            result[col] = prediction_features_rf[col]
+        return result
 
     def features_used(self):
         return [
@@ -269,17 +272,15 @@ class P1204BitstreamMode3:
         per_sequence = self._calculate(features, model_coefficients, rf_model, display_res, device_type)
 
         per_second = per_sample_interval_function(per_sequence["final_pred"], features)
+        debug = {
+            col: float(per_sequence[col].values[0])
+            for col in filter(lambda x: x != "final_pred", per_sequence)
+        }
         return {
             "video_full_path": videofilename,
             "video_basename": os.path.basename(videofilename),
             "per_second": [float(x) for x in per_second],
             "per_sequence": float(per_sequence["final_pred"].values[0]),
-            "debug": {
-                "baseline": float(per_sequence["baseline"].values[0]),
-                "coding_deg": float(per_sequence["coding_deg"].values[0]),
-                "upscaling_deg": float(per_sequence["upscaling_deg"].values[0]),
-                "temporal_deg": float(per_sequence["temporal_deg"].values[0]),
-                "rf_pred": float(per_sequence["rf_pred"].values[0]),
-            },
+            "debug": debug,
             "date": str(datetime.datetime.now()),
         }
