@@ -275,7 +275,7 @@ class P1204BitstreamMode3:
         per_sequence = self._calculate(features, model_coefficients, rf_model, display_res, device_type)
 
         per_second = per_sample_interval_function(per_sequence["final_pred"], features)
-        print(per_sequence.keys())
+
         debug = {
             col: float(per_sequence["debug"][col].values[0])
             for col in per_sequence["debug"]
