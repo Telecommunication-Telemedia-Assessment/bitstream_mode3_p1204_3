@@ -95,7 +95,6 @@ class P1204BitstreamMode3:
 
         # parametric part - core model
         pred = 100 - (cod_deg + resolution + framerate)
-        pred = np.clip(pred, 0, 100)
         pred = np.vectorize(mos_from_r)(pred)
         pred = np.clip(pred, 1, 5)
         initial_predicted_score = np.vectorize(map_to_5)(pred)

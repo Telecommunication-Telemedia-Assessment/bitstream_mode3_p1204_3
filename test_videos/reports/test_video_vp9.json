@@ -1,11 +1,33 @@
 {
-    "date": "2020-04-16 23:41:47.601320",
+    "date": "2021-11-30 17:12:24.779734",
     "debug": {
         "baseline": 2.898352789601364,
         "coding_deg": 52.49078139374002,
         "rf_pred": 2.444248668622345,
         "temporal_deg": 0.0,
         "upscaling_deg": 0.0
+    },
+    "features": {
+        "0.0_quantil_StdDev_MotionX_non-i": 0.315658943322485,
+        "1.0_quantil_FrameSize": 20902.6,
+        "Bitrate": 772.138671875,
+        "Framerate": 60.0,
+        "Resolution": 8294400.0,
+        "h264": 0.0,
+        "h264_10bit": 0.0,
+        "hevc": 0.0,
+        "hevc_10bit": 0.0,
+        "iqr_Av_QPBB_non-i": 0.4,
+        "iqr_min_QP": 0.6,
+        "kurtosis_Av_Motion": 11.64902518023714,
+        "kurtosis_Av_QPBB_non-i": 9.454349936497985,
+        "kurtosis_FrameSize_non-i": 17.787335033398243,
+        "mean_Av_QPBB_non_i": 252.64795004072766,
+        "predicted_mos_mode3_baseline": 2.898352789601364,
+        "quant": 0.9907762746695202,
+        "std_FrameSize_non-i": 1333.1865240382524,
+        "std_max_QP_non-i": 7.753703137279524,
+        "vp9": 1.0
     },
     "per_second": [
         2.6717002506704413,
@@ -20,6 +42,7 @@
         2.6934893700375597
     ],
     "per_sequence": 2.6713007291118545,
+    "version": "0.1.2",
     "video_basename": "test_video_vp9.mkv",
     "video_full_path": "test_videos/test_video_vp9.mkv"
 }
