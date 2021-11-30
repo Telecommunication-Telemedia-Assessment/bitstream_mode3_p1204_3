@@ -20,14 +20,14 @@ R_FROM_MOS_VALUES = [0, 3.25, 3.5, 3.75, 4.0, 4.25, 4.5, 4.75, 5.0, 5.25, 5.5, 5
 
 
 def mos_from_r(Q):
-    if Q <=0:
+    if Q <= 0:
         return MOS_MIN
     if Q >= 100:
         return MOS_MAX
     MOS = (
         MOS_MIN + float(MOS_MAX - MOS_MIN) * float(Q) / 100.0 + float(Q) * float(Q - 60.0) * float(100.0 - Q) * 0.000007
     )
-    return min(MOS_MAX, max(MOS, MOS_MIN))
+    return MOS
 
 
 def r_from_mos(MOS):
