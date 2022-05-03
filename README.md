@@ -20,7 +20,7 @@ Moreover a full description of the models internal structure is provided in the 
 ## Requirements
 To be able to run the model you need to install some software. In addition, we suggest to have high enough free memory available – for a 10 second UHD-1 video sequence, 4 GB of memory should be sufficient.
 
-Currently the model is only tested on Ubuntu >= 18.04.
+Currently the model is only tested on Ubuntu >= 18.04 (18.04, 20.04, 22.04).
 
 * git
 * python3, python3-pip, python3-venv
