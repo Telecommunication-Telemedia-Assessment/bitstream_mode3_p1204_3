@@ -4,7 +4,7 @@ build-backend = "poetry.masonry.api"
 
 [tool.poetry]
 name = "p1204_3"
-version = "0.1.2"
+version = "0.1.3"
 description = "ITU-T P.1204.3 reference implementation"
 readme = "README.md"
 authors = [ "Steve Göring <steve.goering@tu-ilmenau.de>", "Ramachandra Rao Rakesh Rao <Rakesh-Rao.Ramachandra-Rao@tu-ilmenau.de>",]
@@ -17,11 +17,9 @@ scikit-learn = "^1.0.2"
 scipy = "^1.8.0"
 pandas = "^1.4.2"
 
-
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
 gitchangelog = "^3.0.4"
-#pystache = "^0.6.0"
 
 [tool.poetry.scripts]
 p1204_3 = "p1204_3:main"

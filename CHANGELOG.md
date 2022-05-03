@@ -2,8 +2,82 @@ Changelog
 =========
 
 
+v0.1.3 (2022-05-03)
+-------------------
+- Update tests, there were no differences, only formatting. [Steve]
+- Update requirements for docker. [Steve]
+- Go to current scikit-learn version. [Steve]
+- Remove unneeded dependency sklearn-json. [Steve]
+- Changes to make it working with a newer version of sklearn. [Steve]
+- Remove debugging code. [Steve]
+- Update to never python packages. [Steve]
+- Cleanup. [Steve]
+- Minor fix in mos from r. [Steve]
+- Update model.py. [rakeshraor]
+- Removed debug print statement. [Steve Goering]
+- Add version to the output report. [Steve Goering]
+- Make feature values as separate key in the final report. [Steve
+  Goering]
+- Add more debug data to the report. [Steve Goering]
+- Add some fallback error handling to process at least the other
+  specified videos in case something is wrong with the video. [Steve]
+- Create default model. [Steve]
+- Remove poetry dependency within docker container. [Steve]
+- Add requiements.txt for docker container. [Steve]
+- Update readme. [Steve]
+- Merge branch 'master' of github.com:Telecommunication-Telemedia-
+  Assessment/bitstream_mode3_p1204_3. [Steve]
+- Fix Docker build. [Werner Robitza]
+
+  Fixes a bug with Poetry/Python 3.6, related to:
+
+  - https://github.com/python-poetry/poetry/issues/1427#issuecomment-537260307
+  - https://github.com/python-poetry/poetry/issues/3078
+- Fix order of options for docker script. [Werner Robitza]
+
+  Otherwise, -v will be passed to p1204 itself
+- Minor edit. [rakeshraor]
+- Merge branch 'master' of https://github.com/Telecommunication-
+  Telemedia-Assessment/bitstream_mode3_p1204_3. [rakeshraor]
+- Update README.md. [rakeshraor]
+- Handling per-sec score calculation. [rakeshraor]
+- Merge pull request #14 from Telecommunication-Telemedia-
+  Assessment/viewing-distance. [Steve Göring]
+
+  Fix usage of viewing distance and display size
+- Fix usage of viewing distance and display size. [Werner Robitza]
+- Add flag to deactivate caching of features, add __main__ to enable
+  usage out of poetry. [Steve]
+- Add hints of help to readme. [Steve]
+- Add hints for not used params. [Steve]
+- Add a hint about the input params. [Steve]
+- Improve Dockerfile. [Werner Robitza]
+
+  - Add dockerignore
+  - Remove test videos from image, mount locally
+- Add Dockerfile. [Max]
+
+  added Dockerfile and Docker build and test script
+
+  Update Dockerfile
+
+  Removed comment for ENTRYPOINT, this was just for testing
+
+  Update Dockerfile
+
+  Changed to correct upstream
+  Shallow cloning of repos
+- Explain output format. [Werner Robitza]
+- Mention memory requirements. [Werner Robitza]
+- Add a line break in the python version variable inside the release
+  script, this line break is required to not break the code. [Steve]
+- Add a line break in the python version variable inside the release
+  script, this line break is required to not break the code. [Steve]
+
+
 v0.1.2 (2020-04-17)
 -------------------
+- Bump version. [Werner Robitza]
 - Fix release script. [Werner Robitza]
 - Update README.md. [Steve Göring]
 - Update testcases to final model version. [Steve]
