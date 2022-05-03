@@ -131,21 +131,6 @@ def binarize_column(dataframe, column, prefix=""):
         dataframe[prefix + value] = dataframe[column].map(lambda x: 1 if x == value else 0)
     return dataframe
 
-import pdb
-import sys
-class ForkedPdb(pdb.Pdb):
-    """A Pdb subclass that may be used
-    from a forked multiprocessing child
-
-    """
-    def interaction(self, *args, **kwargs):
-        _stdin = sys.stdin
-        try:
-            sys.stdin = open('/dev/stdin')
-            pdb.Pdb.interaction(self, *args, **kwargs)
-        finally:
-            sys.stdin = _stdin
-
 def load_dict_values(dataframe, column):
     """
     load values that are nested as a dictionary for a specific column
@@ -155,12 +140,8 @@ def load_dict_values(dataframe, column):
     _values = list(dataframe[column].apply(lambda x: json.loads(x) if type(x) == str else x).values)
     _values = pd.DataFrame(_values).add_prefix(column + "_")
 
-    #ForkedPdb().set_trace()
     dataframe = pd.concat((dataframe, _values), axis=1)
-    """
-    for x in _values.columns:
-        dataframe[ x] = _values[x].values
-    """
+
     return dataframe
 
 
