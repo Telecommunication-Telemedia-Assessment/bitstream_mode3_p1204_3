@@ -2,11 +2,13 @@
 import os
 import json
 import logging
+import inspect
 
 import pandas as pd
 import numpy as np
 import scipy.stats
-import sklearn_json as skljson
+
+from p1204_3.sklearn_tree_deserializing import deserialize_random_forest_regressor_json
 
 from p1204_3.utils import json_load
 
@@ -91,7 +93,7 @@ def load_serialized(filename_with_path):
     if os.path.isfile(feature_selection_filename):
         feature_selection = json_load(feature_selection_filename)
 
-    regressor = skljson.from_json(filename_with_path)
+    regressor = deserialize_random_forest_regressor_json(filename_with_path)  # skljson.from_json()
     # override n_jobs to prevent warning, model should be fast enough
     # n_jobs helps during training
     regressor.n_jobs = 1
