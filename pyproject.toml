@@ -16,7 +16,6 @@ numpy = "^1.22.3"
 scikit-learn = "^1.0"
 scipy = "^1.8.0"
 pandas = "^1.4.2"
-sklearn-json = "^0.1.0"
 
 
 

@@ -208,17 +208,6 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
-name = "sklearn-json"
-version = "0.1.0"
-description = "A safe, transparent way to share and deploy scikit-learn models."
-category = "main"
-optional = false
-python-versions = ">=3.5"
-
-[package.dependencies]
-scikit-learn = ">=0.21.3"
-
-[[package]]
 name = "threadpoolctl"
 version = "3.1.0"
 description = "threadpoolctl"
@@ -237,7 +226,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "db5044fb89fc487ef6301b0355e8228c6cc3d3880c16a29be432fd263c03338b"
+content-hash = "35afbc2a1b7520533e0d7b0c99c5ae263b32a84ad5027df2fd17d0917ed9a6f8"
 
 [metadata.files]
 atomicwrites = [
@@ -399,10 +388,6 @@ scipy = [
 six = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
     {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
-]
-sklearn-json = [
-    {file = "sklearn-json-0.1.0.tar.gz", hash = "sha256:9c7ab24064705adfa9fdea2b83645545559d58607501fd2328c8fae7f138ee25"},
-    {file = "sklearn_json-0.1.0-py3-none-any.whl", hash = "sha256:f676f388e5a935b419c7674279b6415de8a6416967a7279a3a7f44a86544ac2f"},
 ]
 threadpoolctl = [
     {file = "threadpoolctl-3.1.0-py3-none-any.whl", hash = "sha256:8b99adda265feb6773280df41eece7b2e6561b772d21ffd52e372f999024907b"},
