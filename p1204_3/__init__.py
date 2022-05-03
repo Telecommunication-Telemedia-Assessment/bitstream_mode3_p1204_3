@@ -5,6 +5,7 @@ import json
 import multiprocessing
 import logging
 import itertools
+import traceback
 
 from p1204_3.utils import *
 from p1204_3.model import P1204BitstreamMode3
@@ -37,6 +38,7 @@ def predict_quality(
             f"there was a problem while processing {videofilename}  "
             + "\n" + "error:" + str(e)
         )
+        traceback.print_exc()
         return {}
 
 

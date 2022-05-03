@@ -11,17 +11,19 @@ authors = [ "Steve Göring <steve.goering@tu-ilmenau.de>", "Ramachandra Rao Rake
 license = "LICENCE.md"
 
 [tool.poetry.dependencies]
-python = "^3.6"
-numpy = "^1.18.2"
+python = ">=3.8,<3.11"
+numpy = "^1.22.3"
 scikit-learn = "^0.22.2"
-scipy = "^1.4.1"
-pandas = "^0.25.3"
+scipy = "^1.8.0"
+pandas = "^1.4.2"
 sklearn-json = "^0.1.0"
 
+
+
 [tool.poetry.dev-dependencies]
-pytest = "^4.6"
+pytest = "^5.2"
 gitchangelog = "^3.0.4"
-pystache = "^0.5.4"
+pystache = "^0.6.0"
 
 [tool.poetry.scripts]
 p1204_3 = "p1204_3:main"
