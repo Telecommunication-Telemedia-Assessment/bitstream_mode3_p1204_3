@@ -34,7 +34,6 @@ To install all requirements under Ubuntu please run the following commands:
 ```bash
 sudo apt-get update -qq
 sudo apt-get install -y -qq python3 python3-venv python3-numpy python3-pip git scons ffmpeg
-pip3 install --user poetry
 # ffmpeg/videoparser specific
 sudo apt-get -y install autoconf automake build-essential libass-dev libfreetype6-dev libsdl2-dev libtheora-dev libtool libva-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev pkg-config texinfo wget zlib1g-dev yasm
 ```
