@@ -17,7 +17,7 @@ RUN apt-get -qq update && apt-get install -qq -y \
 	wget zlib1g-dev yasm && \
 	rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install --no-cache-dir pandas
+RUN pip3 install --no-cache-dir pandas scipy sklearn
 
 WORKDIR "/p1204_3"
 RUN git clone --depth 1 https://github.com/Telecommunication-Telemedia-Assessment/bitstream_mode3_p1204_3.git /p1204_3
