@@ -1,4 +1,5 @@
 # ITU-T P.1204.3 Reference Implementation
+
 ITU-T P.1204.3 is a short term video quality prediction model that uses full bitstream data to estimate video quality scores on a segment level.
 
 If you use this model in any of your research work, please cite the following paper:
@@ -17,28 +18,46 @@ If you use this model in any of your research work, please cite the following pa
 
 Moreover a full description of the models internal structure is provided in the paper.
 
+Contents:
+
+- [Requirements](#requirements)
+- [Input Data and Scope](#input-data-and-scope)
+- [Usage](#usage)
+  - [Detailed Options](#detailed-options)
+- [Docker Usage](#docker-usage)
+- [License](#license)
+- [Authors](#authors)
+
 ## Requirements
+
 To be able to run the model you need to install some software. In addition, we suggest to have high enough free memory available – for a 10 second UHD-1 video sequence, 4 GB of memory should be sufficient.
 
-Currently the model is only tested on Ubuntu >= 18.04 (18.04, 20.04, 22.04).
-
+* Linux 64-bit (Currently the model is only tested on Ubuntu >= 18.04, i.e. 18.04, 20.04, 22.04)
 * git
-* python3, python3-pip, python3-venv
-* poetry (e.g. pip3 install poetry)
-* ffmpeg
-* [bitstream_mode3_videoparser](https://github.com/Telecommunication-Telemedia-Assessment/bitstream_mode3_videoparser), will be installed automatically
-    * all dependencies for the bitstream_mode3_videoparser are required
+* Python 3 (`python3`, `python3-pip`, `python3-venv`)
+* `poetry` (e.g. `pip3 install poetry`)
+* `ffmpeg`
+* [bitstream_mode3_videoparser](https://github.com/Telecommunication-Telemedia-Assessment/bitstream_mode3_videoparser)
+    * all dependencies for the bitstream_mode3_videoparser are required, so please 
+    * the software itself will be installed automatically
 
-To install all requirements under Ubuntu please run the following commands:
+First, clone the repository:
+
+```bash
+git clone https://github.com/Telecommunication-Telemedia-Assessment/bitstream_mode3_p1204_3
+cd bitstream_mode3_p1204_3
+```
+
+Install all requirements under Ubuntu:
 
 ```bash
 sudo apt-get update -qq
-sudo apt-get install -y -qq python3 python3-venv python3-numpy python3-pip git scons ffmpeg
+sudo apt-get install -y -qq python3 python3-venv python3-pip git scons ffmpeg
 # ffmpeg/videoparser specific
 sudo apt-get -y install autoconf automake build-essential libass-dev libfreetype6-dev libsdl2-dev libtheora-dev libtool libva-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev pkg-config texinfo wget zlib1g-dev yasm
 ```
 
-After cloning this repository and installation of all requirements, run the following command:
+Run the following command to install the Python requirements:
 
 ```bash
 poetry install
@@ -48,12 +67,28 @@ If you have problems with pip and poetry, run `pip3 install --user -U pip`.
 
 ## Input Data and Scope
 
-As input to the model you need an encoded video sequence of short duration, e.g. 8-10s (based on the ITU-T P.1204 documentation), e.g. checkout the `test_videos` folder.
-H.264, H.265 or VP9 are supported video codecs of the input video sequence.
-For example the [AVT-VQDB-UHD-1](https://github.com/Telecommunication-Telemedia-Assessment/AVT-VQDB-UHD-1) can be used to validate the model performance, as it is shown in the paper `rao2020p1204`.
+The following inputs are within the scope of the P.1204.3 recommendation, see also Table 3 of ITU-T Rec. P.1204:
+
+- Format/Codec: H.264, H.265, VP9, wrapped in a container that ffmpeg can read (e.g., `.mkv`)
+- Duration: 7–9 seconds. Optimal performance for roughly 8 seconds. Models are assumed to provide valid overall video-quality estimations for 5–10 s long sequences.
+- Bit depth: 8 or 10 bit
+- Chroma subsampling: YUV 4:2:0 and YUV 4:2:2
+- Coded resolution: Video sequences of up to 2160p resolution (4K/UHD-1)
+- Display resolution and framerate:
+  - PC/TV: 2160p, up to 60 frames/s
+  - Mobile/Tablet: 1440p, up to 60 frames/s.
+- Viewing distances:
+  - PC/TV: 1.5H to 3H (H: Screen height)
+  - Mobile/Tablet: 4H to 6H
+
+Check out the `test_videos` folder for some examples.
+
+For example, the [AVT-VQDB-UHD-1](https://github.com/Telecommunication-Telemedia-Assessment/AVT-VQDB-UHD-1) can be used to validate the model performance, as it is shown in the paper `rao2020p1204`.
 
 ## Usage
-To use the provided tool, e.g. run
+
+Run the built-in Python tool on a test video:
+
 ```bash
 poetry run p1204_3 test_videos/test_video_h264.mkv
 ```
@@ -68,7 +103,7 @@ poetry run p1204_3 test_videos/test_video_h264.mkv -q
 
 The output will look as follows:
 
-```
+```json
 [
     {
         "date": "2020-08-28 10:37:48.721183",
@@ -107,6 +142,7 @@ The `debug` values are provided for internal testing and diagnostics.
 ### Detailed Options
 
 Otherwise check the included help, `poetry run p1204_3 --help`:
+
 ```
 usage: p1204_3 [-h] [--result_folder RESULT_FOLDER] [--model MODEL] [--cpu_count CPU_COUNT] [--device_type {pc,tv,tablet,mobile}]
                [--device_resolution {3840x2160,2560x1440}] [--viewing_distance {1.5xH,4xH,6xH}] [--display_size {10,32,37,5.1,5.5,5.8,55,65,75}] [--tmp TMP]
@@ -140,22 +176,29 @@ optional arguments:
   -q, --quiet           not print any output except errors (default: False)
 
 stg7, rrao 2020
-
-
 ```
 
 Most parameter default settings are for the PC/TV use case, change to different use cases based on the scope of the recommendation.
-*Important:* in contrast to the official ITU-T P.1204.3 description we provided here the random forest part as a serialized output of scikit-learn, a generated python script including the estimated trees can be found on the [ITU-T P.1204.3 page](https://www.itu.int/rec/T-REC-P.1204.3/en).
 
-The parameters `viewing_distance` and `display_size` are not used for the prediction (changes will not have an effect), however they are formally specified as input parameters for P.1204.3.
-Furthermore, `device_type` and `device_resolution` are dependent on each other. The model is not trained on combinations not part of the standard, e.g. testing TV/PC with `2560x1440` as resolution is not valid, as this resolution is only suitable for tablet and mobile.
+**Important caveats:**
+
+- In contrast to the official ITU-T P.1204.3 description we provided here the random forest part as a serialized output of `scikit-learn`. A generated Python script including the estimated trees can be found on the [ITU-T P.1204.3 page](https://www.itu.int/rec/T-REC-P.1204.3/en).
+- The parameters `viewing_distance` and `display_size` are not used for the prediction (changes will have no effect), however they are formally specified as input parameters for P.1204.3.
+- The `device_type` and `device_resolution` parameters are dependent on each other. The model is not trained on combinations not part of the standard, e.g. testing TV/PC with `2560x1440` as resolution is not valid, as this resolution is only suitable for tablet and mobile.
 
 ## Docker Usage
-The best is to checkout the provided bash file `docker_build_run.sh`.
 
+To build a Docker image, and run the test videos, call:
+
+```bash
+./docker_build_run.sh
+```
+
+Check out the script to see how the temporary folders are mapped into the Docker container.
 
 ## License
-Copyright 2017-2020 Technische Universität Ilmenau, Deutsche Telekom AG
+
+Copyright 2017-2022 Technische Universität Ilmenau, Deutsche Telekom AG
 
 Permission is hereby granted, free of charge, to use the software for non-commercial research purposes.
 
