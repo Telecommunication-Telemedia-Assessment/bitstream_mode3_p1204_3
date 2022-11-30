@@ -18,6 +18,8 @@ If you use this model in any of your research work, please cite the following pa
 
 Moreover a full description of the models internal structure is provided in the paper.
 
+This model has further been extended to different application scopes depending on the available input information. This extension consists of a Mode 0 model (uses only metadata such as codec type, framerate, resoution and bitrate as input), a Mode 1 model (uses Mode 0 information and frame-type and -size information as input), and a Hybrid Mode 0 model (based on Mode 0 metadata and the decoded video pixel information). These models along with ITU-T Rec. P.1204.3 together form a family of models called [_AVQBits_](https://ieeexplore.ieee.org/document/9846967). An open source implementation of these extensions can be found [here](https://github.com/Telecommunication-Telemedia-Assessment/p1204_3_extensions).
+
 Contents:
 
 - [Requirements](#requirements)
