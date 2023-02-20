@@ -4,7 +4,7 @@ ITU-T P.1204.3 is a short term video quality prediction model that uses full bit
 
 If you use this model in any of your research work, please cite the following paper:
 
-```
+```bibtex
 @inproceedings{rao2020p1204,
   author={Rakesh Rao {Ramachandra Rao} and Steve G\"oring and Werner Robitza and Alexander Raake and Bernhard Feiten and Peter List and Ulf Wüstenhagen},
   title={Bitstream-based Model Standard for 4K/UHD: ITU-T P.1204.3 -- Model Details, Evaluation, Analysis and Open Source Implementation},
