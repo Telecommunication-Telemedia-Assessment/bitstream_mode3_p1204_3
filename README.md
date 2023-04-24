@@ -141,6 +141,20 @@ The `per_second` values are MOS values per each second of input.
 
 The `debug` values are provided for internal testing and diagnostics.
 
+
+## Usage globally
+If you want to use this model globally in your system, you can also install everything with 
+
+```bash
+pip3 install .  # you must be in the repository folder
+```
+and then the `p1204_3` command line tool is installed.
+For this it is recommended to perform the installation in a virtual environment, due to the may be older dependencies. (thus the virtual environment must be activated to access the command line tool).
+It is further recommended to check the installation before using the `Usage` part, and this installation will also redo the `video_parser` compilation. 
+
+
+
+
 ### Detailed Options
 
 Otherwise check the included help, `poetry run p1204_3 --help`:
