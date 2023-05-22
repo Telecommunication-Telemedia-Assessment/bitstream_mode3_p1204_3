@@ -1,6 +1,20 @@
 # ITU-T P.1204.3 Reference Implementation
 
-ITU-T P.1204.3 is a short term video quality prediction model that uses full bitstream data to estimate video quality scores on a segment level.
+ITU-T P.1204.3 is a bitstream-based (no-reference) short term video quality prediction model. It uses full bitstream data to estimate video quality scores on a segment level.
+
+Contents:
+
+- [Introduction](#introduction)
+- [Requirements](#requirements)
+- [Input Data and Scope](#input-data-and-scope)
+- [Usage](#usage)
+  - [Usage globally](#usage-globally)
+  - [Detailed Options](#detailed-options)
+  - [Docker Usage](#docker-usage)
+- [License](#license)
+- [Authors](#authors)
+
+## Introduction
 
 If you use this model in any of your research work, please cite the following paper:
 
@@ -18,17 +32,13 @@ If you use this model in any of your research work, please cite the following pa
 
 Moreover a full description of the models internal structure is provided in the paper.
 
-This model has further been extended to different application scopes depending on the available input information. This extension consists of a Mode 0 model (uses only metadata such as codec type, framerate, resoution and bitrate as input), a Mode 1 model (uses Mode 0 information and frame-type and -size information as input), and a Hybrid Mode 0 model (based on Mode 0 metadata and the decoded video pixel information). These models along with ITU-T Rec. P.1204.3 together form a family of models called [_AVQBits_](https://ieeexplore.ieee.org/document/9846967). An open source implementation of these extensions can be found [here](https://github.com/Telecommunication-Telemedia-Assessment/p1204_3_extensions).
+This model has further been extended to different application scopes depending on the available input information. This extension consists of:
 
-Contents:
+- A Mode 0 model (uses only metadata such as codec type, framerate, resoution and bitrate as input),
+- A Mode 1 model (uses Mode 0 information and frame-type and -size information as input), and
+- A Hybrid Mode 0 model (based on Mode 0 metadata and the decoded video pixel information).
 
-- [Requirements](#requirements)
-- [Input Data and Scope](#input-data-and-scope)
-- [Usage](#usage)
-  - [Detailed Options](#detailed-options)
-- [Docker Usage](#docker-usage)
-- [License](#license)
-- [Authors](#authors)
+These models, along with ITU-T Rec. P.1204.3 together, form a family of models called [_AVQBits_](https://ieeexplore.ieee.org/document/9846967). An open source implementation of these extensions can be found [here](https://github.com/Telecommunication-Telemedia-Assessment/p1204_3_extensions).
 
 ## Requirements
 
@@ -71,17 +81,17 @@ If you have problems with pip and poetry, run `pip3 install --user -U pip`.
 
 The following inputs are within the scope of the P.1204.3 recommendation, see also Table 3 of ITU-T Rec. P.1204:
 
-- Format/Codec: H.264, H.265, VP9, wrapped in a container that ffmpeg can read (e.g., `.mkv`)
-- Duration: 7–9 seconds. Optimal performance for roughly 8 seconds. Models are assumed to provide valid overall video-quality estimations for 5–10 s long sequences.
-- Bit depth: 8 or 10 bit
-- Chroma subsampling: YUV 4:2:0 and YUV 4:2:2
-- Coded resolution: Video sequences of up to 2160p resolution (4K/UHD-1)
-- Display resolution and framerate:
-  - PC/TV: 2160p, up to 60 frames/s
-  - Mobile/Tablet: 1440p, up to 60 frames/s.
-- Viewing distances:
-  - PC/TV: 1.5H to 3H (H: Screen height)
-  - Mobile/Tablet: 4H to 6H
+| Factor | Description |
+| --- | --- |
+| Codec | H.264, H.265, VP9 |
+| Container | Any container that ffmpeg can read (e.g., `.mkv`) |
+| Duration | 7–9 seconds. Optimal performance for roughly 8 seconds.<br>Models are assumed to provide valid overall video-quality estimations for 5–10 s long sequences. |
+| Bit depth | 8 or 10 bit |
+| Chroma subsampling | YUV 4:2:0 and YUV 4:2:2 |
+| Coded resolution | Video sequences of from 180p up to 2160p resolution (4K/UHD-1) |
+| Assumed display resolution | PC/TV: 2160p<br>Mobile/Tablet: 1440p |
+| Frame rate | Up to 60fps |
+| Viewing distances | PC/TV: 1.5H to 3H (H: Screen height)<br>Mobile/Tablet: 4H to 6H |
 
 Check out the `test_videos` folder for some examples.
 
@@ -142,18 +152,18 @@ The `per_second` values are MOS values per each second of input.
 The `debug` values are provided for internal testing and diagnostics.
 
 
-## Usage globally
+### Usage globally
+
 If you want to use this model globally in your system, you can also install everything with 
 
 ```bash
 pip3 install .  # you must be in the repository folder
 ```
+
 and then the `p1204_3` command line tool is installed.
-For this it is recommended to perform the installation in a virtual environment, due to the may be older dependencies. (thus the virtual environment must be activated to access the command line tool).
+
+For this it is recommended to perform the installation in a virtual environment, due to the maybe older dependencies. (Thus, the virtual environment must be activated to access the command line tool).
 It is further recommended to check the installation before using the `Usage` part, and this installation will also redo the `video_parser` compilation. 
-
-
-
 
 ### Detailed Options
 
@@ -202,7 +212,7 @@ Most parameter default settings are for the PC/TV use case, change to different 
 - The parameters `viewing_distance` and `display_size` are not used for the prediction (changes will have no effect), however they are formally specified as input parameters for P.1204.3.
 - The `device_type` and `device_resolution` parameters are dependent on each other. The model is not trained on combinations not part of the standard, e.g. testing TV/PC with `2560x1440` as resolution is not valid, as this resolution is only suitable for tablet and mobile.
 
-## Docker Usage
+### Docker Usage
 
 To build a Docker image, and run the test videos, call:
 
