@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
-import os
-import sys
-import logging
-import shutil
-import subprocess
-import json
 import bz2
 import gzip
-
+import json
+import logging
+import os
+import shutil
+import subprocess
+import sys
 
 color_codes = {
     "black": "\033[1;30m",
@@ -49,7 +48,7 @@ def shell_call(call):
 def assert_msg(check, fail_message):
     if not check:
         logging.error(fail_message)
-        sys.exit(0)
+        raise Exception(fail_message)
 
 
 def assert_file(filename, fail_message):
