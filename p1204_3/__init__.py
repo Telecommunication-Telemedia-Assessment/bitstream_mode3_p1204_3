@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-__version__ = "0.1.3" #
+__version__ = "0.1.3"  #
 import argparse
-import json
-import multiprocessing
-import logging
 import itertools
+import json
+import logging
+import multiprocessing
 import traceback
 
-from p1204_3.utils import *
-from p1204_3.model import P1204BitstreamMode3
 from p1204_3.generic import *
+from p1204_3.model import P1204BitstreamMode3
+from p1204_3.utils import *
 
 
 def predict_quality(
@@ -20,7 +20,7 @@ def predict_quality(
     viewing_distance="1.5xH",
     display_size=55,
     temporary_folder="tmp",
-    cache_features=True
+    cache_features=True,
 ):
     try:
         return P1204BitstreamMode3().predict_quality(
@@ -31,12 +31,14 @@ def predict_quality(
             viewing_distance,
             display_size,
             temporary_folder,
-            cache_features
+            cache_features,
         )
     except Exception as e:
         logging.error(
             f"there was a problem while processing {videofilename}  "
-            + "\n" + "error:" + str(e)
+            + "\n"
+            + "error:"
+            + str(e)
         )
         traceback.print_exc()
         return {}
@@ -156,7 +158,7 @@ def main(_=[]):
             a["viewing_distance"],
             a["display_size"],
             a["tmp"],
-            not a["nocached_features"]
+            not a["nocached_features"],
         )
         for video in a["video"]
     ]
@@ -177,6 +179,7 @@ def main(_=[]):
             a["result_folder"], os.path.splitext(result["video_basename"])[0] + ".json"
         )
         json_store(reportname, result)
+        logging.info(f"""stored result to {reportname}""")
 
 
 if __name__ == "__main__":
