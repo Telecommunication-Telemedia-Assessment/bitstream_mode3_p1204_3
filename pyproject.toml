@@ -11,11 +11,11 @@ authors = [ "Steve Göring <steve.goering@tu-ilmenau.de>", "Ramachandra Rao Rake
 license = "LICENCE.md"
 
 [tool.poetry.dependencies]
-python = ">=3.8,<3.11"
-numpy = "^1.22.3"
-scikit-learn = "^1.0.2"
-scipy = "^1.8.0"
-pandas = "^1.4.2"
+python = ">=3.8,<3.12"
+numpy = "^1.24.4"
+scikit-learn = "1.2.2"
+scipy = "^1.10.1"
+pandas = "^2.0.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

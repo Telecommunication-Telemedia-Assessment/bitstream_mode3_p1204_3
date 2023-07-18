@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
-import logging
 import json
+import logging
 
 import numpy as np
 import pandas as pd
 import scipy.stats
 
-from p1204_3.utils import assert_msg
-from p1204_3.utils import file_open
 from p1204_3.modelutils import stats_per_gop
+from p1204_3.utils import assert_msg, file_open
 
 
-def extract_features(videofilename, used_features, ffprobe_result, bitstream_parser_result_file):
-    """ extract all specified features for a given video file """
+def extract_features(
+    videofilename, used_features, ffprobe_result, bitstream_parser_result_file
+):
+    """extract all specified features for a given video file"""
     features = {}
     pvs = PVS(videofilename, ffprobe_result, bitstream_parser_result_file)
     for f in used_features:
@@ -23,7 +24,7 @@ def extract_features(videofilename, used_features, ffprobe_result, bitstream_par
 
 
 class PVS:
-    """ Wrapper to access ffprobe / bitstream statistics internally """
+    """Wrapper to access ffprobe / bitstream statistics internally"""
 
     def __init__(self, videofilename, ffprobe_result, bitstream_parser_result_file):
         self._videofilename = videofilename
@@ -95,8 +96,7 @@ class Duration:
 
 
 class BitDepth:
-    """ Extracts bitdepth for a given video
-    """
+    """Extracts bitdepth for a given video"""
 
     def calculate(self, processed_video_sequence):
         # TODO: maybe simpler possible?
@@ -148,11 +148,13 @@ class AvMotionStatsPerGop:
 
 class QPstatspersecond:
     """
-        Calculate qp values per video second
+    Calculate qp values per video second
     """
 
     def calculate(self, processed_video_sequence):
-        logging.debug("calculate QPstatspersecond based for {}".format(processed_video_sequence))
+        logging.debug(
+            "calculate QPstatspersecond based for {}".format(processed_video_sequence)
+        )
         results = []
         gop_res = {}
         qp_list = []
@@ -179,8 +181,8 @@ class QPstatspersecond:
         frames_per_sec = list(frames_per_sec)
 
         for i in range(0, len(frames_per_sec) - 1):
-            start = np.int(frames_per_sec[i])
-            end = np.int(frames_per_sec[i + 1])
+            start = int(frames_per_sec[i])
+            end = int(frames_per_sec[i + 1])
             qp_per_sec = qp_list[start:end]
             fr_type_per_frame = fr_type_list[start:end]
             qp_per_sec_non_i = qp_per_sec.copy()
