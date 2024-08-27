@@ -44,13 +44,15 @@ These models, along with ITU-T Rec. P.1204.3 together, form a family of models c
 
 To be able to run the model you need to install some software. In addition, we suggest to have high enough free memory available – for a 10 second UHD-1 video sequence, 4 GB of memory should be sufficient.
 
+The following is required for native execution – for Docker, see the section [Docker Usage](#docker-usage).
+
 * Linux 64-bit (Currently the model is only tested on Ubuntu >= 18.04, i.e. 18.04, 20.04, 22.04)
 * git
 * Python 3 (`python3`, `python3-pip`, `python3-venv`)
 * `poetry` (e.g. `pip3 install poetry`)
 * `ffmpeg`
 * [bitstream_mode3_videoparser](https://github.com/Telecommunication-Telemedia-Assessment/bitstream_mode3_videoparser)
-    * all dependencies for the bitstream_mode3_videoparser are required, so please 
+    * all dependencies for the bitstream_mode3_videoparser are required, so please install them first
     * the software itself will be installed automatically
 
 First, clone the repository:
@@ -154,7 +156,7 @@ The `debug` values are provided for internal testing and diagnostics.
 
 ### Usage globally
 
-If you want to use this model globally in your system, you can also install everything with 
+If you want to use this model globally in your system, you can also install everything with
 
 ```bash
 pip3 install .  # you must be in the repository folder
@@ -163,7 +165,7 @@ pip3 install .  # you must be in the repository folder
 and then the `p1204_3` command line tool is installed.
 
 For this it is recommended to perform the installation in a virtual environment, due to the maybe older dependencies. (Thus, the virtual environment must be activated to access the command line tool).
-It is further recommended to check the installation before using the `Usage` part, and this installation will also redo the `video_parser` compilation. 
+It is further recommended to check the installation before using the `Usage` part, and this installation will also redo the `video_parser` compilation.
 
 ### Detailed Options
 
@@ -213,6 +215,8 @@ Most parameter default settings are for the PC/TV use case, change to different 
 - The `device_type` and `device_resolution` parameters are dependent on each other. The model is not trained on combinations not part of the standard, e.g. testing TV/PC with `2560x1440` as resolution is not valid, as this resolution is only suitable for tablet and mobile.
 
 ### Docker Usage
+
+With Docker you can build the software without installing any dependencies on your system. The only requirement is to have Docker installed. The Docker image is based on Ubuntu 20.04 and has been tested under Linux and macOS (Apple Silicon and Intel).
 
 To build a Docker image, and run the test videos, call:
 
