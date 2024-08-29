@@ -6,7 +6,6 @@ import logging
 import os
 import shutil
 import subprocess
-import sys
 
 color_codes = {
     "black": "\033[1;30m",
@@ -32,15 +31,35 @@ logging.addLevelName(logging.INFO, color_codes["green"] + logging.getLevelName(l
 logging.addLevelName(logging.DEBUG, color_codes["blue"] + logging.getLevelName(logging.DEBUG) + color_codes["end_code"])
 
 
-def shell_call(call):
+def shell_call(call, stream_output=False):
     """
     Run a program via system call and return stdout + stderr.
-    @param call programm and command line parameter list, e.g shell_call("ls /")
-    @return stdout and stderr of programm call
+    @param call program and command line parameter list, e.g shell_call("ls /")
+    @param stream_output if True, stream the output in real-time
+    @return stdout and stderr of program call
     """
     try:
-        output = subprocess.check_output(call, universal_newlines=True, shell=True)
-    except Exception as e:
+        if stream_output:
+            process = subprocess.Popen(
+                call,
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                universal_newlines=True,
+            )
+            output = []
+            for line in process.stdout:
+                print(line, end="")  # Print the line in real-time
+                output.append(line)
+            process.wait()
+            if process.returncode != 0:
+                raise subprocess.CalledProcessError(process.returncode, call)
+            return "".join(output)
+        else:
+            output = subprocess.check_output(
+                call, universal_newlines=True, shell=True, stderr=subprocess.STDOUT
+            )
+    except subprocess.CalledProcessError as e:
         output = str(e.output)
     return output
 

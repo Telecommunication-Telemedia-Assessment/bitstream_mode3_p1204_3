@@ -5,12 +5,13 @@ ITU-T P.1204.3 is a bitstream-based (no-reference) short term video quality pred
 Contents:
 
 - [Introduction](#introduction)
-- [Requirements](#requirements)
+- [Requirements and Installation](#requirements-and-installation)
+  - [Native Installation](#native-installation)
+  - [Docker Installation](#docker-installation)
 - [Input Data and Scope](#input-data-and-scope)
 - [Usage](#usage)
   - [Usage globally](#usage-globally)
   - [Detailed Options](#detailed-options)
-  - [Docker Usage](#docker-usage)
 - [License](#license)
 - [Authors](#authors)
 
@@ -40,11 +41,18 @@ This model has further been extended to different application scopes depending o
 
 These models, along with ITU-T Rec. P.1204.3 together, form a family of models called [_AVQBits_](https://ieeexplore.ieee.org/document/9846967). An open source implementation of these extensions can be found [here](https://github.com/Telecommunication-Telemedia-Assessment/p1204_3_extensions).
 
-## Requirements
+## Requirements and Installation
 
-To be able to run the model you need to install some software. In addition, we suggest to have high enough free memory available – for a 10 second UHD-1 video sequence, 4 GB of memory should be sufficient.
+There are two ways to run the model:
 
-The following is required for native execution – for Docker, see the section [Docker Usage](#docker-usage).
+1. Native installation (requires ffmpeg, python3, and `bitstream_mode3_videoparser`)
+2. Docker (no dependencies required)
+
+In addition, we suggest to have high enough free memory available – for a 10 second UHD-1 video sequence, 4 GB of memory should be sufficient.
+
+### Native Installation
+
+The following is required for native execution – for Docker, see the next section.
 
 * Linux 64-bit (Currently the model is only tested on Ubuntu >= 18.04, i.e. 18.04, 20.04, 22.04)
 * git
@@ -79,21 +87,47 @@ poetry install
 
 If you have problems with pip and poetry, run `pip3 install --user -U pip`.
 
+### Docker Installation
+
+With Docker you can build the software without installing any dependencies on your system. The only requirement is to have Docker installed. The Docker image is based on Ubuntu 20.04 and has been tested under AMD64 (Intel) and Linux.
+
+First, clone the repository:
+
+```bash
+git clone https://github.com/Telecommunication-Telemedia-Assessment/bitstream_mode3_p1204_3
+cd bitstream_mode3_p1204_3
+```
+
+Then, build a Docker image, and run the test videos:
+
+```bash
+./docker_build_run.sh
+```
+
+See the script to check how to call the docker container with your own video.
+
+Note: If this build fails for some reason, we provide an alternative way to run the model using a prebuilt Docker image for the video parser. Go to the [bitstream_mode3_videoparser](https://github.com/Telecommunication-Telemedia-Assessment/bitstream_mode3_videoparser#pre-built-docker-image) repository and follow the instructions in the README.md for downloading the prebuilt image. Then, you can install the dependencies locally and pass the `--use_docker` flag:
+
+```bash
+poetry install
+poetry run p1204_3 --use_docker test_videos/test_video_h264.mkv
+```
+
 ## Input Data and Scope
 
 The following inputs are within the scope of the P.1204.3 recommendation, see also Table 3 of ITU-T Rec. P.1204:
 
-| Factor | Description |
-| --- | --- |
-| Codec | H.264, H.265, VP9 |
-| Container | Any container that ffmpeg can read (e.g., `.mkv`) |
-| Duration | 7–9 seconds. Optimal performance for roughly 8 seconds.<br>Models are assumed to provide valid overall video-quality estimations for 5–10 s long sequences. |
-| Bit depth | 8 or 10 bit |
-| Chroma subsampling | YUV 4:2:0 and YUV 4:2:2 |
-| Coded resolution | Video sequences of from 180p up to 2160p resolution (4K/UHD-1) |
-| Assumed display resolution | PC/TV: 2160p<br>Mobile/Tablet: 1440p |
-| Frame rate | Up to 60fps |
-| Viewing distances | PC/TV: 1.5H to 3H (H: Screen height)<br>Mobile/Tablet: 4H to 6H |
+| Factor                     | Description                                                                                                                                                 |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Codec                      | H.264, H.265, VP9                                                                                                                                           |
+| Container                  | Any container that ffmpeg can read (e.g., `.mkv`)                                                                                                           |
+| Duration                   | 7–9 seconds. Optimal performance for roughly 8 seconds.<br>Models are assumed to provide valid overall video-quality estimations for 5–10 s long sequences. |
+| Bit depth                  | 8 or 10 bit                                                                                                                                                 |
+| Chroma subsampling         | YUV 4:2:0 and YUV 4:2:2                                                                                                                                     |
+| Coded resolution           | Video sequences of from 180p up to 2160p resolution (4K/UHD-1)                                                                                              |
+| Assumed display resolution | PC/TV: 2160p<br>Mobile/Tablet: 1440p                                                                                                                        |
+| Frame rate                 | Up to 60fps                                                                                                                                                 |
+| Viewing distances          | PC/TV: 1.5H to 3H (H: Screen height)<br>Mobile/Tablet: 4H to 6H                                                                                             |
 
 Check out the `test_videos` folder for some examples.
 
@@ -172,9 +206,12 @@ It is further recommended to check the installation before using the `Usage` par
 Otherwise check the included help, `poetry run p1204_3 --help`:
 
 ```
-usage: p1204_3 [-h] [--result_folder RESULT_FOLDER] [--model MODEL] [--cpu_count CPU_COUNT] [--device_type {pc,tv,tablet,mobile}]
-               [--device_resolution {3840x2160,2560x1440}] [--viewing_distance {1.5xH,4xH,6xH}] [--display_size {10,32,37,5.1,5.5,5.8,55,65,75}] [--tmp TMP]
-               [-d] [-nocached_features] [-q]
+usage: p1204_3 [-h] [--result_folder RESULT_FOLDER] [--model MODEL]
+               [--cpu_count CPU_COUNT] [--device_type {pc,tv,tablet,mobile}]
+               [--device_resolution {3840x2160,2560x1440}]
+               [--viewing_distance {1.5xH,4xH,6xH}]
+               [--display_size {10,32,37,5.1,5.5,5.8,55,65,75}] [--tmp TMP]
+               [-d] [-nocached_features] [-q] [--use_docker]
                video [video ...]
 
 ITU-T P.1204.3 video quality model reference implementation
@@ -182,26 +219,35 @@ ITU-T P.1204.3 video quality model reference implementation
 positional arguments:
   video                 input video to estimate quality
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   --result_folder RESULT_FOLDER
-                        folder to store video quality results (default: reports)
+                        folder to store video quality results (default:
+                        reports)
   --model MODEL         model config file to be used for prediction (default:
-                        ./p1204_3/models/p1204_3/config.json)
+                        /Users/werner/Documents/Projects/itu/pnats2avhd-avt/bi
+                        tstream_mode3_p1204_3/p1204_3/models/p1204_3/config.js
+                        on)
   --cpu_count CPU_COUNT
                         thread/cpu count (default: 8)
   --device_type {pc,tv,tablet,mobile}
                         device that is used for playout (default: pc)
   --device_resolution {3840x2160,2560x1440}
-                        resolution of the output device (width x height) (default: 3840x2160)
+                        resolution of the output device (width x height)
+                        (default: 3840x2160)
   --viewing_distance {1.5xH,4xH,6xH}
-                        viewing distance relative to the display height (not used for model prediction) (default: 1.5xH)
+                        viewing distance relative to the display height (not
+                        used for model prediction) (default: 1.5xH)
   --display_size {10,32,37,5.1,5.5,5.8,55,65,75}
-                        display diagonal size in inches (not used for model prediction) (default: 55)
-  --tmp TMP             temporary folder to store bitstream stats and other intermediate results (default: ./tmp)
+                        display diagonal size in inches (not used for model
+                        prediction) (default: 55)
+  --tmp TMP             temporary folder to store bitstream stats and other
+                        intermediate results (default: ./tmp)
   -d, --debug           show debug output (default: False)
   -nocached_features    no caching of features (default: False)
   -q, --quiet           not print any output except errors (default: False)
+  --use_docker          use Docker for videoparser instead of local
+                        installation (default: False)
 
 stg7, rrao 2020
 ```
@@ -214,21 +260,9 @@ Most parameter default settings are for the PC/TV use case, change to different 
 - The parameters `viewing_distance` and `display_size` are not used for the prediction (changes will have no effect), however they are formally specified as input parameters for P.1204.3.
 - The `device_type` and `device_resolution` parameters are dependent on each other. The model is not trained on combinations not part of the standard, e.g. testing TV/PC with `2560x1440` as resolution is not valid, as this resolution is only suitable for tablet and mobile.
 
-### Docker Usage
-
-With Docker you can build the software without installing any dependencies on your system. The only requirement is to have Docker installed. The Docker image is based on Ubuntu 20.04 and has been tested under Linux and macOS (Apple Silicon and Intel).
-
-To build a Docker image, and run the test videos, call:
-
-```bash
-./docker_build_run.sh
-```
-
-Check out the script to see how the temporary folders are mapped into the Docker container.
-
 ## License
 
-Copyright 2017-2022 Technische Universität Ilmenau, Deutsche Telekom AG
+Copyright 2017-2024 Technische Universität Ilmenau, Deutsche Telekom AG
 
 Permission is hereby granted, free of charge, to use the software for non-commercial research purposes.
 
@@ -249,4 +283,4 @@ Contributors:
 * Bernhard Feiten - Deutsche Telekom AG
 * Peter List - Deutsche Telekom AG
 * Ulf Wüstenhagen - Deutsche Telekom AG
-* Werner Robitza - Technische Universität Ilmenau
+* Werner Robitza - AVEQ GmbH

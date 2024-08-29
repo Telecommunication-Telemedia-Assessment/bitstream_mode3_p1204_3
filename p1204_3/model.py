@@ -199,9 +199,9 @@ class P1204BitstreamMode3:
         viewing_distance="1.5xH",
         display_size=55,
         temporary_folder="tmp",
-        cache_features=True
+        cache_features=True,
+        use_docker=False,
     ):
-
         assert_file(videofilename, f"{videofilename} does not exist, please check")
         assert_file(model_config_filename, f"{model_config_filename} does not exist, please check")
 
@@ -246,15 +246,18 @@ class P1204BitstreamMode3:
 
         self.display_res = display_res
 
-        check_or_install_videoparser()
+        check_or_install_videoparser(use_docker=use_docker)
         os.makedirs(temporary_folder, exist_ok=True)
 
         feature_cache = os.path.join(
-            temporary_folder, os.path.splitext(os.path.basename(videofilename))[0] + "_feat.pkl"
+            temporary_folder,
+            os.path.splitext(os.path.basename(videofilename))[0] + "_feat.pkl",
         )
         if not os.path.isfile(feature_cache) or not cache_features:
             # run bitstream parser
-            bitstream_parser_result_file = run_videoparser(videofilename, temporary_folder)
+            bitstream_parser_result_file = run_videoparser(
+                videofilename, temporary_folder, use_docker=use_docker
+            )
             if bitstream_parser_result_file == "":
                 logging.error(f"no bitstream stats file for {videofilename}")
                 return {}

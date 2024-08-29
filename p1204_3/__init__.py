@@ -21,6 +21,7 @@ def predict_quality(
     display_size=55,
     temporary_folder="tmp",
     cache_features=True,
+    use_docker=False,
 ):
     try:
         return P1204BitstreamMode3().predict_quality(
@@ -32,6 +33,7 @@ def predict_quality(
             display_size,
             temporary_folder,
             cache_features,
+            use_docker,
         )
     except Exception as e:
         logging.error(
@@ -120,6 +122,11 @@ def main(_=[]):
         action="store_true",
         help="not print any output except errors",
     )
+    parser.add_argument(
+        "--use_docker",
+        action="store_true",
+        help="use Docker for videoparser instead of local installation",
+    )
 
     a = vars(parser.parse_args())
 
@@ -159,6 +166,7 @@ def main(_=[]):
             a["display_size"],
             a["tmp"],
             not a["nocached_features"],
+            a["use_docker"],
         )
         for video in a["video"]
     ]
