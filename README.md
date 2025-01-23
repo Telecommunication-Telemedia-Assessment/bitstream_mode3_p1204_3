@@ -79,9 +79,10 @@ sudo apt-get install -y -qq python3 python3-venv python3-pip git scons ffmpeg
 sudo apt-get -y install autoconf automake build-essential libass-dev libfreetype6-dev libsdl2-dev libtheora-dev libtool libva-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev pkg-config texinfo wget zlib1g-dev yasm
 ```
 
-Run the following command to install the Python requirements:
+Run the following command to install the Python requirements and the binary `p1204_3` in `.venv/bin/p1204_3`:
 
 ```bash
+mkdir -p .venv
 poetry install
 ```
 
