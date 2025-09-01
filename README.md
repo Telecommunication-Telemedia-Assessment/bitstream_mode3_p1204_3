@@ -56,8 +56,8 @@ The following is required for native execution – for Docker, see the next sect
 
 * Linux 64-bit (Currently the model is only tested on Ubuntu >= 18.04, i.e. 18.04, 20.04, 22.04)
 * git
-* Python 3 (`python3`, `python3-pip`, `python3-venv`)
-* `poetry` (e.g. `pip3 install poetry`)
+* Python 3.9 or higher (`python3`, `python3-pip`, `python3-venv`)
+* `poetry` 2.0 or higher (e.g. `pip3 install poetry`)
 * `ffmpeg`
 * [bitstream_mode3_videoparser](https://github.com/Telecommunication-Telemedia-Assessment/bitstream_mode3_videoparser)
     * all dependencies for the bitstream_mode3_videoparser are required, so please install them first
