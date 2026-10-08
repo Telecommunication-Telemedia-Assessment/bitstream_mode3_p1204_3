@@ -1,8 +1,9 @@
 {
-    "date": "2022-05-03 18:26:24.445933",
+    "date": "2026-10-08 11:27:49.880139",
     "debug": {
         "baseline": 4.16292374098929,
         "coding_deg": 32.43006645212775,
+        "q": 4.086734715316158,
         "rf_pred": 4.010545689643026,
         "temporal_deg": 0.0,
         "upscaling_deg": 0.0
@@ -41,8 +42,8 @@
         3.955412313745017,
         3.991729591232866
     ],
-    "per_sequence": 4.086734715316158,
-    "version": "0.1.2",
+    "per_sequence": 4.08815716506754,
+    "version": "0.1.3",
     "video_basename": "test_video_h264.mkv",
     "video_full_path": "test_videos/test_video_h264.mkv"
 }

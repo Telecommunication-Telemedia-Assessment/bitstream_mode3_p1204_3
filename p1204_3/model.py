@@ -159,15 +159,21 @@ class P1204BitstreamMode3:
         predicted_score = np.clip(predicted_score, 1, 5)
         prediction_features_rf["rf_pred"] = predicted_score
 
+        # Weighted average of both parts (Q, Equation 14)
         w = 0.5
-        final_pred = (
-            w * prediction_features_rf["predicted_mos_mode3_baseline"] + (1 - w) * prediction_features_rf["rf_pred"]
-        )
+        q = w * prediction_features_rf["predicted_mos_mode3_baseline"] + (1 - w) * prediction_features_rf["rf_pred"]
+
+        # Final adjustment (O.27, Equation 15), clipped to the five-point scale
+        a = 1.036
+        b = -0.1457
+        final_pred = np.clip(a * q + b, 1, 5)
         feature_values = {col: prediction_features_rf[col] for col in feature_columns}
         result = {
             "final_pred": final_pred,
+            "q": q,
             "debug": {
                 "baseline": prediction_features_rf["predicted_mos_mode3_baseline"],
+                "q": q,
                 "coding_deg": cod_deg,
                 "upscaling_deg": resolution,
                 "temporal_deg": framerate,
@@ -277,7 +283,8 @@ class P1204BitstreamMode3:
 
         per_sequence = self._calculate(features, model_coefficients, rf_model, display_res, device_type)
 
-        per_second = per_sample_interval_function(per_sequence["final_pred"], features)
+        # Per-second scores are based on Q (Equation 16)
+        per_second = per_sample_interval_function(per_sequence["q"], features)
 
         debug = {
             col: float(per_sequence["debug"][col].values[0])
