@@ -3,7 +3,7 @@
 ITU-T P.1204.3 is a bitstream-based (no-reference) short term video quality prediction model. It uses full bitstream data to estimate video quality scores on a segment level.
 
 > [!IMPORTANT]
-> Versions up to v0.1.3 did not apply the final adjustment of Equation 15 of the Recommendation (O.27 = 1.036 · Q − 0.1457) and reported Q as the per-sequence score. This is fixed: the per-sequence score is now O.27, clipped to 1 to 5, and Q is reported under `debug`. Per-sequence scores therefore differ slightly from earlier versions (for the test videos, by +0.002, +0.003 and −0.05). Per-second scores are unchanged.
+> Versions up to v0.1.3 did not apply the final adjustment of Equation 15 of the Recommendation (O.27 = 1.036 · Q − 0.1457) and reported Q as the per-sequence score. This is fixed in v0.1.4: the per-sequence score is now O.27, clipped to 1 to 5, and Q is reported under `debug`. Per-sequence scores therefore differ slightly from earlier versions (for the test videos, by +0.002, +0.003 and −0.05). Per-second scores are unchanged.
 
 Contents:
 

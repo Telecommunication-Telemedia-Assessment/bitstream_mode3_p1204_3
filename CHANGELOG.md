@@ -2,6 +2,54 @@ Changelog
 =========
 
 
+v0.1.4 (2026-10-08)
+-------------------
+- Fix(model): apply final adjustment of Equation 15. [Werner Robitza]
+
+  The model returned Q (Equation 14) as the per-sequence score. P.1204.3
+  defines the final score as O.27 = 1.036 * Q - 0.1457 (Equation 15).
+  Apply it and clip the result to 1 to 5. The per-second scores stay
+  based on Q, as in Equation 16. Q is added to the debug output.
+
+  Update the reference reports of the test videos to the new scores.
+- Merge pull request #32 from Telecommunication-Telemedia-
+  Assessment/python3.9. [Steve Göring]
+
+  bump python version compatibility, allow running with python 3.13
+- Bump python version compatibility, allow running with python 3.13.
+  [Werner Robitza]
+- Use venv for local installation rather than poetry cache folder.
+  [Werner Robitza]
+- Allow using prebuilt docker version of videoparser. [Werner Robitza]
+- Update README. [Werner Robitza]
+- Merge pull request #30 from Telecommunication-Telemedia-
+  Assessment/update-packages. [Steve Göring]
+
+  update packages and add python 3.11 compatibility
+
+  thanks for checking :)
+- Update packages and add python 3.11 compatibility. [Werner Robitza]
+- Throw error in check function instead of sys.exit. [Werner Robitza]
+
+  ... to prevent multiprocessing from hanging infinitely on error
+- Log which reports were stored. [Werner Robitza]
+- Merge pull request #28 from Telecommunication-Telemedia-
+  Assessment/improve-readme. [Steve Göring]
+
+  improve readme
+- Improve readme. [Werner Robitza]
+
+  clarify some factors, grammar, update table of contents
+- Add usage global. [Steve Göring]
+- Update README.md. [Steve Göring]
+- Update README.md. [rakeshraor]
+- Update joblib. [Steve]
+- Update README with model scope and other info. [Werner Robitza]
+- Update dockerfile. [Werner Robitza]
+
+  Simplifies build envrionment, updates to Ubuntu 20.04.
+
+
 v0.1.3 (2022-05-03)
 -------------------
 - Update tests, there were no differences, only formatting. [Steve]
@@ -120,6 +168,10 @@ v0.1.2 (2020-04-17)
   - add debug option to toggle debug logs
   - add quiet option to only show errors (enables parsing JSON output from stdout)
 - Add devekopment version of the model. [Steve]
+
+
+v0.1.1 (2020-04-14)
+-------------------
 - Go to next version; cleanup some project settings. [Steve]
 - Fix release script. [Steve]
 - Update model coefficients to the ones used in the standard. [Steve]

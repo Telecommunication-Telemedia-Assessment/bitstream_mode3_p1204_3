@@ -1,5 +1,5 @@
 {
-    "date": "2026-10-08 11:27:50.018455",
+    "date": "2026-10-08 11:36:54.110519",
     "debug": {
         "baseline": 2.898352789601364,
         "coding_deg": 52.49078139374002,
@@ -43,7 +43,7 @@
         2.6934893700375597
     ],
     "per_sequence": 2.621767555359881,
-    "version": "0.1.3",
+    "version": "0.1.4",
     "video_basename": "test_video_vp9.mkv",
     "video_full_path": "test_videos/test_video_vp9.mkv"
 }
