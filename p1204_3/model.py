@@ -284,7 +284,7 @@ class P1204BitstreamMode3:
         per_sequence = self._calculate(features, model_coefficients, rf_model, display_res, device_type)
 
         # Per-second scores are based on Q (Equation 16)
-        per_second = per_sample_interval_function(per_sequence["q"], features)
+        per_second = per_sample_interval_function(float(per_sequence["q"].values[0]), features)
 
         debug = {
             col: float(per_sequence["debug"][col].values[0])

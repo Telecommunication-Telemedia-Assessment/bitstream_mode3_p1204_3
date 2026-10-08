@@ -22,10 +22,17 @@ def deserialize_tree(tree_dict, n_features, n_classes, n_outputs):
     tree_dict['nodes'] = [tuple(lst) for lst in tree_dict['nodes']]
 
     names = ['left_child', 'right_child', 'feature', 'threshold', 'impurity', 'n_node_samples', 'weighted_n_node_samples']
-    tree_dict['nodes'] = np.array(tree_dict['nodes'], dtype=np.dtype({'names': names, 'formats': tree_dict['nodes_dtype']}))
-    tree_dict['values'] = np.array(tree_dict['values'])
+    stored_nodes = np.array(tree_dict['nodes'], dtype=np.dtype({'names': names, 'formats': tree_dict['nodes_dtype']}))
 
     tree = Tree(n_features, np.array([n_classes], dtype=np.intp), n_outputs)
+
+    # newer scikit-learn versions add node fields (e.g. missing_go_to_left), which are left at zero
+    nodes = np.zeros(len(stored_nodes), dtype=tree.__getstate__()['nodes'].dtype)
+    for name in names:
+        nodes[name] = stored_nodes[name]
+    tree_dict['nodes'] = nodes
+    tree_dict['values'] = np.array(tree_dict['values'])
+
     tree.__setstate__(tree_dict)
 
     return tree
