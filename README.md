@@ -59,8 +59,7 @@ The following is required for native execution – for Docker, see the next sect
 
 * Linux 64-bit (Currently the model is only tested on Ubuntu >= 18.04, i.e. 18.04, 20.04, 22.04)
 * git
-* Python 3.9 or higher (`python3`, `python3-pip`, `python3-venv`)
-* `poetry` 2.0 or higher (e.g. `pip3 install poetry`)
+* [uv](https://docs.astral.sh/uv/getting-started/installation/), which also installs a suitable Python version (3.9 or higher) if needed
 * `ffmpeg`
 * [bitstream_mode3_videoparser](https://github.com/Telecommunication-Telemedia-Assessment/bitstream_mode3_videoparser)
     * all dependencies for the bitstream_mode3_videoparser are required, so please install them first
@@ -77,7 +76,7 @@ Install all requirements under Ubuntu:
 
 ```bash
 sudo apt-get update -qq
-sudo apt-get install -y -qq python3 python3-venv python3-pip git scons ffmpeg
+sudo apt-get install -y -qq python3 git scons ffmpeg
 # ffmpeg/videoparser specific
 sudo apt-get -y install autoconf automake build-essential libass-dev libfreetype6-dev libsdl2-dev libtheora-dev libtool libva-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev pkg-config texinfo wget zlib1g-dev yasm
 ```
@@ -85,11 +84,8 @@ sudo apt-get -y install autoconf automake build-essential libass-dev libfreetype
 Run the following command to install the Python requirements and the binary `p1204_3` in `.venv/bin/p1204_3`:
 
 ```bash
-mkdir -p .venv
-poetry install
+uv sync
 ```
-
-If you have problems with pip and poetry, run `pip3 install --user -U pip`.
 
 ### Docker Installation
 
@@ -113,8 +109,8 @@ See the script to check how to call the docker container with your own video.
 Note: If this build fails for some reason, we provide an alternative way to run the model using a prebuilt Docker image for the video parser. Go to the [bitstream_mode3_videoparser](https://github.com/Telecommunication-Telemedia-Assessment/bitstream_mode3_videoparser#pre-built-docker-image) repository and follow the instructions in the README.md for downloading the prebuilt image. Then, you can install the dependencies locally and pass the `--use_docker` flag:
 
 ```bash
-poetry install
-poetry run p1204_3 --use_docker test_videos/test_video_h264.mkv
+uv sync
+uv run p1204_3 --use_docker test_videos/test_video_h264.mkv
 ```
 
 ## Input Data and Scope
@@ -142,7 +138,7 @@ For example, the [AVT-VQDB-UHD-1](https://github.com/Telecommunication-Telemedia
 Run the built-in Python tool on a test video:
 
 ```bash
-poetry run p1204_3 test_videos/test_video_h264.mkv
+uv run p1204_3 test_videos/test_video_h264.mkv
 ```
 
 The output will include log message printed on stderr and output scores printed on stdout.
@@ -150,7 +146,7 @@ The output will include log message printed on stderr and output scores printed 
 The resulting video quality metrics will be printed in a JSON-formatted array, where each entry corresponds to one input file. For example, to only get the metrics printed in JSON format, run:
 
 ```bash
-poetry run p1204_3 test_videos/test_video_h264.mkv -q
+uv run p1204_3 test_videos/test_video_h264.mkv -q
 ```
 
 The output will look as follows:
@@ -197,7 +193,7 @@ The `debug` values are provided for internal testing and diagnostics.
 If you want to use this model globally in your system, you can also install everything with
 
 ```bash
-pip3 install .  # you must be in the repository folder
+uv tool install .  # you must be in the repository folder
 ```
 
 and then the `p1204_3` command line tool is installed.
@@ -207,7 +203,7 @@ It is further recommended to check the installation before using the `Usage` par
 
 ### Detailed Options
 
-Otherwise check the included help, `poetry run p1204_3 --help`:
+Otherwise check the included help, `uv run p1204_3 --help`:
 
 ```
 usage: p1204_3 [-h] [--result_folder RESULT_FOLDER] [--model MODEL]

@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
-# requires toml to be installed
-# this tool is specific for poetry projects
-import toml
+# requires uv to be installed
 import sys
 import subprocess
 import argparse
@@ -36,46 +34,20 @@ def main():
         print("Your local branch is behind the remote. Please run `git pull --rebase` first.")
         sys.exit(1)
 
-    with open("pyproject.toml") as xfp:
-        cfg = toml.load(xfp)
-
-    current_version = cfg["tool"]["poetry"]["version"]
-
+    current_version = run_cmd(["uv", "version", "--short"]).strip()
     print(f"Current version: {current_version}")
 
-    current_version_parts = list(map(int, current_version.split(".")))
-
-    if len(current_version_parts) != 3:
-        print("Version must have three parts!")
-        sys.exit(1)
-
-    if cli_args.version == "patch":
-        current_version_parts[2] += 1
-    elif cli_args.version == "minor":
-        current_version_parts[1] += 1
-        current_version_parts[2] = 0
-    elif cli_args.version == "major":
-        current_version_parts[0] += 1
-        current_version_parts[1] = 0
-        current_version_parts[2] = 0
+    # update pyproject.toml and uv.lock
+    print("update pyproject.toml")
+    run_cmd(["uv", "version", "--bump", cli_args.version], cli_args.dry_run)
+    if cli_args.dry_run:
+        next_version = run_cmd(["uv", "version", "--short", "--bump", cli_args.version, "--dry-run"]).strip()
     else:
-        print("Invalid choice for version")
-        sys.exit(1)
-
-    next_version = ".".join(str(p) for p in current_version_parts)
+        next_version = run_cmd(["uv", "version", "--short"]).strip()
 
     print(f"move to next version inside repo: {next_version}")
 
-    # update pyproject.toml
-    print("update pyproject.toml")
-    cfg["tool"]["poetry"]["version"] = next_version
-    if not cli_args.dry_run:
-        with open("pyproject.toml", "w") as xfp:
-            toml.dump(cfg, xfp)
-
-    # update cfg["tool"]["poetry"]["name"]/__init__.py
-
-    init_py = f"""{cfg["tool"]["poetry"]["name"]}/__init__.py"""
+    init_py = "p1204_3/__init__.py"
     content = []
     print(f"update {init_py}")
     if not cli_args.dry_run:
@@ -94,7 +66,7 @@ def main():
     run_cmd(["git", "commit", "-a", "-m", message], cli_args.dry_run)
     run_cmd(["git", "tag", f"v{next_version}"], cli_args.dry_run)
 
-    changelog = run_cmd(["poetry", "run", "gitchangelog"], cli_args.dry_run)
+    changelog = run_cmd(["uv", "run", "gitchangelog"], cli_args.dry_run)
     if not cli_args.dry_run:
         with open("CHANGELOG.md", "w") as ch:
             ch.write(changelog)

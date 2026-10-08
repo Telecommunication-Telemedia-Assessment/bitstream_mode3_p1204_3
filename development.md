@@ -1,11 +1,15 @@
 # Development Guide
 
-* please run the following things before commiting:
-    * `./check.sh`
-    * `poetry run pytest -vv --capture=sys`
-    * `./prettify.sh`
+Please run the following before committing:
 
-# Docker
-* in case the requirements are updated run:
-    * `poetry export --without-hashes -f requirements.txt > requirements.txt`
-    * the docker container does not use poetry, thus needs the updated requirements.txt
+* `./check.sh`
+* `uv run pytest -vv --capture=sys`
+* `./prettify.sh`
+
+## Dependencies
+
+Dependencies are managed with [uv](https://docs.astral.sh/uv/). After changing them in `pyproject.toml`, run `uv lock` and commit `uv.lock`. The Docker image installs the locked versions with `uv sync --frozen`.
+
+## Releases
+
+Run `./release.py patch` (or `minor`, `major`). Use `-n` for a dry run.

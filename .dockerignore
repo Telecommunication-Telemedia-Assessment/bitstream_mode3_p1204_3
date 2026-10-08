@@ -4,3 +4,4 @@ tests
 tmp
 reports
 .git
+.venv

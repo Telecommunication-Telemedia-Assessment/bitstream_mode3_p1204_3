@@ -4,8 +4,7 @@ ENV LANG C.UTF-8
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get -qq update && apt-get install -qq -y \
-	python3 python3-pip git \
-	python3-venv \
+	python3 git \
 	scons ffmpeg \
 	autoconf automake \
 	build-essential libass-dev \
@@ -19,12 +18,15 @@ RUN apt-get -qq update && apt-get install -qq -y \
 	rm -rf /var/lib/apt/lists/*
 
 WORKDIR /p1204_3
+COPY --from=ghcr.io/astral-sh/uv:0.12.5 /uv /usr/local/bin/uv
+ENV UV_PYTHON_INSTALL_DIR=/opt/python UV_LINK_MODE=copy
 COPY . /p1204_3/
-RUN pip3 install -r requirements.txt
+RUN uv sync --frozen --no-dev
+ENV PATH="/p1204_3/.venv/bin:$PATH"
 
 COPY ./p1204_3/bitstream_mode3_videoparser /p1204_3/p1204_3/
 WORKDIR /p1204_3/p1204_3/bitstream_mode3_videoparser
 RUN ./build.sh
 
 WORKDIR /p1204_3
-ENTRYPOINT ["python3", "-m" , "p1204_3"]
+ENTRYPOINT ["python", "-m", "p1204_3"]
